@@ -6,7 +6,7 @@
 [![Database](https://img.shields.io/badge/Database-PostgreSQL%20(Supabase)-336791?logo=postgresql)](https://supabase.com)
 [![Tests](https://img.shields.io/badge/Automated%20Tests-36%20Passed-brightgreen)](test_api.py)
 
-Proyek ini merupakan implementasi **Tugas Akhir Learning Labs: Backend Development** yang mengusung arsitektur RESTful API skala produksi untuk platform manajemen karakter gacha, inventori pemain, dan pembentukan tim tempur (*team builder / Spiral Abyss*).
+Proyek ini merupakan implementasi **Tugas Akhir Learning Labs: Backend Development** yang mengusung arsitektur RESTful API skala produksi untuk platform manajemen karakter gacha, inventori pemain, dan pembentukan tim genshin (*team builder / Spiral Abyss*). (which is just for example dont take it seriously)
 
 API ini dibangun menggunakan **Python Flask**, driver native **psycopg2** dengan `RealDictCursor`, serta di-deploy secara serverless pada **Vercel** dengan basis data **PostgreSQL di Supabase**.
 
