@@ -13,6 +13,27 @@ app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 app.url_map.strict_slashes = False
 
+from urllib.parse import parse_qs
+
+class VercelPathMiddleware:
+    """
+    Middleware untuk merekonstruksi PATH_INFO asli saat request
+    di-rewrite oleh Vercel Serverless Function menggunakan parameter __path.
+    """
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        qs = parse_qs(environ.get("QUERY_STRING", ""))
+        if "__path" in qs:
+            p = qs["__path"][0]
+            if not p.startswith("/"):
+                p = "/" + p
+            environ["PATH_INFO"] = p
+        return self.wsgi_app(environ, start_response)
+
+app.wsgi_app = VercelPathMiddleware(app.wsgi_app)
+
 # Timestamp awal server start untuk metrik uptime
 START_TIME = time.time()
 
@@ -84,9 +105,6 @@ def root():
         "author": "lunizura (Muhammad Izzul Islam)",
         "version": "1.0.0",
         "status": "operational",
-        "debug_headers": {k: v for k, v in request.headers.items() if "auth" not in k.lower() and "cookie" not in k.lower()},
-        "debug_path": request.path,
-        "debug_path_info": request.environ.get("PATH_INFO"),
         "documentation": {
             "github": "https://github.com/lunizura/gacha-builder-api-learninglabs",
             "endpoints": {
