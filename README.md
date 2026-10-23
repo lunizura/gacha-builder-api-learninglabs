@@ -4,7 +4,7 @@
 [![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![Flask Framework](https://img.shields.io/badge/Framework-Flask%203.1-green?logo=flask)](https://flask.palletsprojects.com/)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL%20(Supabase)-336791?logo=postgresql)](https://supabase.com)
-[![Tests](https://img.shields.io/badge/Automated%20Tests-30%20Passed-brightgreen)](test_api.py)
+[![Tests](https://img.shields.io/badge/Automated%20Tests-36%20Passed-brightgreen)](test_api.py)
 
 Proyek ini merupakan implementasi **Tugas Akhir Learning Labs: Backend Development** yang mengusung arsitektur RESTful API skala produksi untuk platform manajemen karakter gacha, inventori pemain, dan pembentukan tim tempur (*team builder / Spiral Abyss*).
 
@@ -622,7 +622,7 @@ Mengambil komposisi formasi tim dari PostgreSQL View `v_party_team_details`.
 
 ## 🧪 Pengujian Otomatis (Automated Testing)
 
-Proyek ini dilengkapi test suite komprehensif pada file `test_api.py` yang mencakup **30 skenario pengujian** menggunakan modul bawaan `unittest` dan Flask Test Client:
+Proyek ini dilengkapi test suite komprehensif pada file `test_api.py` yang mencakup **36 skenario pengujian** menggunakan modul bawaan `unittest` dan Flask Test Client:
 
 ```bash
 python test_api.py
@@ -660,9 +660,15 @@ test_27_put_update_invalid_element_id (__main__.GachaApiTestCase) ... ok
 test_28_put_update_invalid_role (__main__.GachaApiTestCase) ... ok
 test_29_search_character_substring (__main__.GachaApiTestCase) ... ok
 test_30_get_characters_filter_role_and_weapon (__main__.GachaApiTestCase) ... ok
+test_31_post_rejects_null_string_fields (__main__.GachaApiTestCase) ... ok
+test_32_post_and_put_rejects_boolean_stats (__main__.GachaApiTestCase) ... ok
+test_33_put_rejects_null_name (__main__.GachaApiTestCase) ... ok
+test_34_sorting_order_characters_and_weapons (__main__.GachaApiTestCase) ... ok
+test_35_trailing_slash_normalization (__main__.GachaApiTestCase) ... ok
+test_36_case_insensitive_domain_normalization (__main__.GachaApiTestCase) ... ok
 
 ----------------------------------------------------------------------
-Ran 30 tests in 0.110s
+Ran 36 tests in 0.143s
 
 OK
 ```
@@ -697,7 +703,7 @@ File koleksi Postman v2.1 telah disertakan di root repositori: `postman_collecti
 | **5** | **Core CRUD REST API** | Operasi `GET`, `POST`, `PUT`, `DELETE` pada `/api/characters` dengan status code `200`, `201`, `400`, `404`, `409`. | ✅ **Terpenuhi** |
 | **6** | **Integrity & Error Handling** | Menangkap `ForeignKeyViolation` saat DELETE dan mengembalikan pesan ramah HTTP 409 Conflict. | ✅ **Terpenuhi** |
 | **7** | **Serverless Cloud Deployment** | Arsitektur WSGI `api/index.py` + `vercel.json` siap di-deploy ke Vercel Serverless. | ✅ **Terpenuhi** |
-| **8** | **Dokumentasi & Testing** | Diagram ERD Mermaid, panduan setup, Postman v2.1 collection, dan 30 skenario unit testing otomatis. | ✅ **Terpenuhi** |
+| **8** | **Dokumentasi & Testing** | Diagram ERD Mermaid, panduan setup, Postman v2.1 collection, dan 36 skenario unit testing otomatis. | ✅ **Terpenuhi** |
 
 ---
 

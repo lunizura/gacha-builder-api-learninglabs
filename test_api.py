@@ -449,6 +449,95 @@ class GachaApiTestCase(unittest.TestCase):
             self.assertEqual(c["role_utama"], "Main DPS")
             self.assertEqual(c["tipe_senjata"], "Polearm")
 
+    def test_31_post_rejects_null_string_fields(self):
+        """Memastikan field string bernilai null (JSON) ditolak dengan 400 Bad Request."""
+        payload = {
+            "nama_karakter": None,
+            "id_elemen": 1,
+            "rarity": 5,
+            "tipe_senjata": "Sword",
+            "role_utama": "Main DPS",
+            "base_hp": 10000,
+            "base_atk": 250,
+            "base_def": 700,
+            "ascension_stat": None
+        }
+        resp = self.client.post("/api/characters", json=payload)
+        self.assertEqual(resp.status_code, 400)
+        data = resp.get_json()
+        self.assertIn("errors", data)
+        errors_str = " ".join(data["errors"])
+        self.assertIn("nama_karakter", errors_str)
+        self.assertIn("ascension_stat", errors_str)
+
+    def test_32_post_and_put_rejects_boolean_stats(self):
+        """Memastikan passing tipe boolean true/false untuk stat numerik ditolak (400)."""
+        # Test pada POST
+        post_payload = {
+            "nama_karakter": "Bool Test",
+            "id_elemen": True,
+            "rarity": 5,
+            "tipe_senjata": "Sword",
+            "role_utama": "Main DPS",
+            "base_hp": True,
+            "base_atk": True,
+            "base_def": True,
+            "ascension_stat": "ATK"
+        }
+        post_resp = self.client.post("/api/characters", json=post_payload)
+        self.assertEqual(post_resp.status_code, 400)
+
+        # Test pada PUT
+        put_resp = self.client.put("/api/characters/1", json={"base_hp": True})
+        self.assertEqual(put_resp.status_code, 400)
+
+    def test_33_put_rejects_null_name(self):
+        """Memastikan PUT dengan nama_karakter null ditolak (400 Bad Request)."""
+        resp = self.client.put("/api/characters/1", json={"nama_karakter": None})
+        self.assertEqual(resp.status_code, 400)
+
+    def test_34_sorting_order_characters_and_weapons(self):
+        """Memastikan sorting data karakter dan senjata berjalan dengan urutan yang benar."""
+        # Sorting characters by base_atk descending
+        resp_c = self.client.get("/api/characters?sort_by=base_atk&order=desc")
+        self.assertEqual(resp_c.status_code, 200)
+        atks = [c["base_atk"] for c in resp_c.get_json()["data"]]
+        self.assertEqual(atks, sorted(atks, reverse=True))
+
+        # Sorting weapons (default by rarity DESC, base_atk DESC, id ASC)
+        resp_w = self.client.get("/api/weapons")
+        self.assertEqual(resp_w.status_code, 200)
+        w_data = resp_w.get_json()["data"]
+        rarities = [w["rarity"] for w in w_data]
+        self.assertEqual(rarities, sorted(rarities, reverse=True))
+
+    def test_35_trailing_slash_normalization(self):
+        """Memastikan request dengan trailing slash (/api/characters/) dilayani tanpa error 308/404."""
+        resp = self.client.get("/api/characters/")
+        self.assertEqual(resp.status_code, 200)
+
+        resp_el = self.client.get("/api/elements/")
+        self.assertEqual(resp_el.status_code, 200)
+
+    def test_36_case_insensitive_domain_normalization(self):
+        """Memastikan tipe senjata dan role dengan variasi huruf kecil dinormalisasi secara otomatis."""
+        payload = {
+            "nama_karakter": "Chevreuse",
+            "id_elemen": 1,
+            "rarity": 4,
+            "tipe_senjata": "polearm",  # Huruf kecil
+            "role_utama": "healer",     # Huruf kecil
+            "base_hp": 11980,
+            "base_atk": 193,
+            "base_def": 605,
+            "ascension_stat": "HP%"
+        }
+        resp = self.client.post("/api/characters", json=payload)
+        self.assertEqual(resp.status_code, 201)
+        data = resp.get_json()["data"]
+        self.assertEqual(data["tipe_senjata"], "Polearm")
+        self.assertEqual(data["role_utama"], "Healer")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

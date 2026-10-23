@@ -364,6 +364,24 @@
             },
             "description": "Mencoba menghapus ID karakter yang tidak ada di database."
           }
+        },
+        {
+          "name": "DELETE Character - Success (200 OK)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/characters/8",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters", "8"]
+            },
+            "description": "Menghapus karakter yang baru dibuat (ID 8) yang belum terikat ke inventori pemain, menghasilkan HTTP 200 OK."
+          }
         }
       ]
     }

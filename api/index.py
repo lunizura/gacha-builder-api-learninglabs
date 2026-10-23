@@ -11,6 +11,7 @@ except ImportError:
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
+app.url_map.strict_slashes = False
 
 # Timestamp awal server start untuk metrik uptime
 START_TIME = time.time()
@@ -18,6 +19,8 @@ START_TIME = time.time()
 # Validasi Domain Data Gacha
 VALID_WEAPON_TYPES = {"Sword", "Claymore", "Polearm", "Bow", "Catalyst"}
 VALID_ROLES = {"Main DPS", "Sub DPS", "Support", "Healer", "Shielder"}
+WEAPON_MAP = {w.lower(): w for w in VALID_WEAPON_TYPES}
+ROLE_MAP = {r.lower(): r for r in VALID_ROLES}
 VALID_RARITIES = {4, 5}
 ALLOWED_SORT_FIELDS = {"id", "nama_karakter", "rarity", "base_hp", "base_atk", "base_def"}
 ALLOWED_SORT_ORDERS = {"asc", "desc"}
@@ -467,44 +470,60 @@ def create_character():
     errors = []
 
     # Validasi nama_karakter
-    nama_karakter = str(data.get("nama_karakter", "")).strip()
-    if not nama_karakter:
+    nama_karakter_raw = data.get("nama_karakter")
+    if not isinstance(nama_karakter_raw, str) or not nama_karakter_raw.strip():
         errors.append("Field 'nama_karakter' wajib diisi (string non-empty)")
-    elif len(nama_karakter) > 100:
+    elif len(nama_karakter_raw.strip()) > 100:
         errors.append("Field 'nama_karakter' maksimal 100 karakter")
+    nama_karakter = nama_karakter_raw.strip() if isinstance(nama_karakter_raw, str) else ""
 
     # Validasi id_elemen
     id_elemen = data.get("id_elemen")
-    if id_elemen is None or not isinstance(id_elemen, int) or id_elemen <= 0:
+    if not isinstance(id_elemen, int) or isinstance(id_elemen, bool) or id_elemen <= 0:
         errors.append("Field 'id_elemen' wajib diisi berupa integer positif yang valid")
 
     # Validasi rarity
     rarity = data.get("rarity")
-    if rarity not in VALID_RARITIES:
+    if not isinstance(rarity, int) or isinstance(rarity, bool) or rarity not in VALID_RARITIES:
         errors.append("Field 'rarity' wajib bernilai 4 atau 5")
 
     # Validasi tipe_senjata
-    tipe_senjata = str(data.get("tipe_senjata", "")).strip()
-    if tipe_senjata not in VALID_WEAPON_TYPES:
+    tipe_senjata_raw = data.get("tipe_senjata")
+    tipe_senjata = ""
+    if not isinstance(tipe_senjata_raw, str) or not tipe_senjata_raw.strip():
         errors.append(f"Field 'tipe_senjata' harus salah satu dari: {', '.join(sorted(VALID_WEAPON_TYPES))}")
+    else:
+        norm_w = WEAPON_MAP.get(tipe_senjata_raw.strip().lower())
+        if not norm_w:
+            errors.append(f"Field 'tipe_senjata' harus salah satu dari: {', '.join(sorted(VALID_WEAPON_TYPES))}")
+        else:
+            tipe_senjata = norm_w
 
     # Validasi role_utama
-    role_utama = str(data.get("role_utama", "")).strip()
-    if role_utama not in VALID_ROLES:
+    role_utama_raw = data.get("role_utama")
+    role_utama = ""
+    if not isinstance(role_utama_raw, str) or not role_utama_raw.strip():
         errors.append(f"Field 'role_utama' harus salah satu dari: {', '.join(sorted(VALID_ROLES))}")
+    else:
+        norm_r = ROLE_MAP.get(role_utama_raw.strip().lower())
+        if not norm_r:
+            errors.append(f"Field 'role_utama' harus salah satu dari: {', '.join(sorted(VALID_ROLES))}")
+        else:
+            role_utama = norm_r
 
     # Validasi base_hp, base_atk, base_def
     for stat_field in ("base_hp", "base_atk", "base_def"):
         val = data.get(stat_field)
-        if val is None or not isinstance(val, int) or val <= 0:
+        if not isinstance(val, int) or isinstance(val, bool) or val <= 0:
             errors.append(f"Field '{stat_field}' wajib berupa integer positif (> 0)")
 
     # Validasi ascension_stat
-    ascension_stat = str(data.get("ascension_stat", "")).strip()
-    if not ascension_stat:
+    ascension_stat_raw = data.get("ascension_stat")
+    if not isinstance(ascension_stat_raw, str) or not ascension_stat_raw.strip():
         errors.append("Field 'ascension_stat' wajib diisi (contoh: 'CRIT DMG', 'Elemental Mastery')")
-    elif len(ascension_stat) > 50:
+    elif len(ascension_stat_raw.strip()) > 50:
         errors.append("Field 'ascension_stat' maksimal 50 karakter")
+    ascension_stat = ascension_stat_raw.strip() if isinstance(ascension_stat_raw, str) else ""
 
     if errors:
         return jsonify({
@@ -573,17 +592,6 @@ def update_character(id):
             "message": "Request body harus berupa JSON object yang valid"
         }), 400
 
-    # Periksa keberadaan karakter terlebih dahulu
-    check_query = "SELECT id, nama_karakter FROM characters WHERE id = %s;"
-    with get_db_cursor(commit=False) as cur:
-        cur.execute(check_query, (id,))
-        existing = cur.fetchone()
-        if not existing:
-            return jsonify({
-                "status": "error",
-                "message": f"Karakter dengan ID {id} tidak ditemukan"
-            }), 404
-
     # Filter dan validasi field yang diizinkan untuk diubah
     updatable_fields = {
         "nama_karakter", "id_elemen", "rarity", "tipe_senjata",
@@ -597,50 +605,54 @@ def update_character(id):
             continue
 
         if key == "nama_karakter":
-            val_str = str(value).strip()
-            if not val_str or len(val_str) > 100:
-                errors.append("nama_karakter harus berupa string 1-100 karakter")
+            if not isinstance(value, str) or not value.strip() or len(value.strip()) > 100:
+                errors.append("nama_karakter harus berupa string 1-100 karakter non-kosong")
             else:
-                updates[key] = val_str
+                updates[key] = value.strip()
 
         elif key == "id_elemen":
-            if not isinstance(value, int) or value <= 0:
+            if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
                 errors.append("id_elemen harus berupa integer positif")
             else:
                 updates[key] = value
 
         elif key == "rarity":
-            if value not in VALID_RARITIES:
+            if not isinstance(value, int) or isinstance(value, bool) or value not in VALID_RARITIES:
                 errors.append("rarity harus bernilai 4 atau 5")
             else:
                 updates[key] = value
 
         elif key == "tipe_senjata":
-            val_str = str(value).strip()
-            if val_str not in VALID_WEAPON_TYPES:
+            if not isinstance(value, str) or not value.strip():
                 errors.append(f"tipe_senjata harus salah satu dari: {', '.join(sorted(VALID_WEAPON_TYPES))}")
             else:
-                updates[key] = val_str
+                norm_w = WEAPON_MAP.get(value.strip().lower())
+                if not norm_w:
+                    errors.append(f"tipe_senjata harus salah satu dari: {', '.join(sorted(VALID_WEAPON_TYPES))}")
+                else:
+                    updates[key] = norm_w
 
         elif key == "role_utama":
-            val_str = str(value).strip()
-            if val_str not in VALID_ROLES:
+            if not isinstance(value, str) or not value.strip():
                 errors.append(f"role_utama harus salah satu dari: {', '.join(sorted(VALID_ROLES))}")
             else:
-                updates[key] = val_str
+                norm_r = ROLE_MAP.get(value.strip().lower())
+                if not norm_r:
+                    errors.append(f"role_utama harus salah satu dari: {', '.join(sorted(VALID_ROLES))}")
+                else:
+                    updates[key] = norm_r
 
         elif key in ("base_hp", "base_atk", "base_def"):
-            if not isinstance(value, int) or value <= 0:
+            if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
                 errors.append(f"{key} harus berupa integer positif")
             else:
                 updates[key] = value
 
         elif key == "ascension_stat":
-            val_str = str(value).strip()
-            if not val_str or len(val_str) > 50:
-                errors.append("ascension_stat harus berupa string 1-50 karakter")
+            if not isinstance(value, str) or not value.strip() or len(value.strip()) > 50:
+                errors.append("ascension_stat harus berupa string 1-50 karakter non-kosong")
             else:
-                updates[key] = val_str
+                updates[key] = value.strip()
 
     if errors:
         return jsonify({
@@ -655,16 +667,7 @@ def update_character(id):
             "message": "Tidak ada field valid yang dikirim untuk diupdate"
         }), 400
 
-    # Jika id_elemen diupdate, pastikan elemen valid
-    if "id_elemen" in updates:
-        with get_db_cursor(commit=False) as cur:
-            cur.execute("SELECT id FROM elements WHERE id = %s;", (updates["id_elemen"],))
-            if not cur.fetchone():
-                return jsonify({
-                    "status": "error",
-                    "message": f"id_elemen {updates['id_elemen']} tidak ditemukan pada tabel elements"
-                }), 400
-
+    check_query = "SELECT id, nama_karakter FROM characters WHERE id = %s;"
     set_clauses = [f"{col} = %s" for col in updates.keys()]
     params = list(updates.values())
     params.append(id)
@@ -678,6 +681,23 @@ def update_character(id):
 
     try:
         with get_db_cursor(commit=True) as cur:
+            cur.execute(check_query, (id,))
+            existing = cur.fetchone()
+            if not existing:
+                return jsonify({
+                    "status": "error",
+                    "message": f"Karakter dengan ID {id} tidak ditemukan"
+                }), 404
+
+            # Jika id_elemen diupdate, pastikan elemen valid dalam sesi yang sama
+            if "id_elemen" in updates:
+                cur.execute("SELECT id FROM elements WHERE id = %s;", (updates["id_elemen"],))
+                if not cur.fetchone():
+                    return jsonify({
+                        "status": "error",
+                        "message": f"id_elemen {updates['id_elemen']} tidak ditemukan pada tabel elements"
+                    }), 400
+
             cur.execute(update_query, tuple(params))
             updated_char = cur.fetchone()
 
@@ -720,7 +740,7 @@ def delete_character(id):
     delete_query = "DELETE FROM characters WHERE id = %s;"
 
     try:
-        with get_db_cursor(commit=False) as cur:
+        with get_db_cursor(commit=True) as cur:
             cur.execute(check_query, (id,))
             character = cur.fetchone()
             if not character:
@@ -729,9 +749,7 @@ def delete_character(id):
                     "message": f"Karakter dengan ID {id} tidak ditemukan"
                 }), 404
 
-        char_name = character["nama_karakter"]
-
-        with get_db_cursor(commit=True) as cur:
+            char_name = character["nama_karakter"]
             cur.execute(delete_query, (id,))
 
         return jsonify({

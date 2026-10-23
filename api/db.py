@@ -272,6 +272,9 @@ class MockCursor:
                     param_idx += 1
                     res = [w for w in res if search_val in w["nama_senjata"].lower()]
 
+                if "ORDER BY" in q_upper:
+                    res.sort(key=lambda w: (-w.get("rarity", 0), -w.get("base_atk", 0), w.get("id", 0)))
+
                 self._result = res
                 self._rowcount = len(res)
                 return
@@ -355,6 +358,14 @@ class MockCursor:
                     param_idx += 1
                     rows = [r for r in rows if s_val in r["nama_karakter"].lower()]
 
+                if "ORDER BY" in q_upper:
+                    order_part = q_upper.split("ORDER BY")[1].strip().rstrip(";").strip()
+                    tokens = order_part.split()
+                    if tokens:
+                        col_token = tokens[0].replace("C.", "").lower()
+                        is_desc = len(tokens) > 1 and tokens[1] == "DESC"
+                        rows.sort(key=lambda r: (r.get(col_token) is None, r.get(col_token, 0)), reverse=is_desc)
+
                 self._result = rows
                 self._rowcount = len(rows)
                 return
@@ -413,15 +424,12 @@ class MockCursor:
                 )
             initial_count = len(self.storage.characters)
             self.storage.characters = [c for c in self.storage.characters if c["id"] != char_id]
+            self.storage.skills = [s for s in self.storage.skills if s.get("id_character") != char_id]
             self._rowcount = initial_count - len(self.storage.characters)
             self._result = []
             return
 
         # Fallback default
-        self._result = []
-        self._rowcount = 0
-
-        # Default fallback
         self._result = []
         self._rowcount = 0
 
