@@ -84,6 +84,9 @@ def root():
         "author": "lunizura (Muhammad Izzul Islam)",
         "version": "1.0.0",
         "status": "operational",
+        "debug_headers": {k: v for k, v in request.headers.items() if "auth" not in k.lower() and "cookie" not in k.lower()},
+        "debug_path": request.path,
+        "debug_path_info": request.environ.get("PATH_INFO"),
         "documentation": {
             "github": "https://github.com/lunizura/gacha-builder-api-learninglabs",
             "endpoints": {
