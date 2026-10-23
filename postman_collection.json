@@ -1,0 +1,371 @@
+{
+  "info": {
+    "_postman_id": "c1f7a4b2-9d8e-4a3b-bc11-e6a8321098ef",
+    "name": "Gacha Builder REST API - Learning Labs Backend",
+    "description": "Koleksi Postman v2.1 untuk Tugas Akhir Learning Labs: Backend Development (Gacha Character & Team Builder Platform). Berisi seluruh endpoint CRUD, filtering, health check, master data, dan contoh error 400, 404, 409.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5000",
+      "type": "string",
+      "description": "Base URL REST API (Ganti dengan URL Vercel setelah di-deploy)"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Root & Catalog",
+      "item": [
+        {
+          "name": "GET Root API Index",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            },
+            "description": "Mengambil ringkasan metadata API, informasi pembuat, dan katalog endpoint yang tersedia."
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Health & System",
+      "item": [
+        {
+          "name": "GET Health Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            },
+            "description": "Memeriksa status uptime server dan konektivitas live database PostgreSQL (Supabase)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Master Data (Elements & Weapons)",
+      "item": [
+        {
+          "name": "GET All Elements",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/elements",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "elements"]
+            },
+            "description": "Mengambil 7 elemen master (Pyro, Hydro, Anemo, Electro, Dendro, Cryo, Geo) beserta kode warna hex dan efek reaksi."
+          }
+        },
+        {
+          "name": "GET All Weapons",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/weapons",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "weapons"]
+            },
+            "description": "Mengambil seluruh katalog senjata dalam database."
+          }
+        },
+        {
+          "name": "GET Weapons Filtered (Rarity 5 & Sword)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/weapons?rarity=5&weapon_type=Sword",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "weapons"],
+              "query": [
+                {
+                  "key": "rarity",
+                  "value": "5"
+                },
+                {
+                  "key": "weapon_type",
+                  "value": "Sword"
+                }
+              ]
+            },
+            "description": "Mengambil senjata bintang 5 dengan tipe pedang (Sword)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Team Builder (Joined View)",
+      "item": [
+        {
+          "name": "GET Party Teams (v_party_team_details)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/teams",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "teams"]
+            },
+            "description": "Mengambil formasi party tim pemain lengkap dengan join relasi karakter, elemen, senjata, dan posisi slot."
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Characters CRUD",
+      "item": [
+        {
+          "name": "GET List Characters (All)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/characters",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters"]
+            },
+            "description": "Mengambil seluruh daftar karakter dengan data relasi elemen."
+          }
+        },
+        {
+          "name": "GET Characters Filtered (Pyro & Rarity 5)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/characters?element=Pyro&rarity=5",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters"],
+              "query": [
+                {
+                  "key": "element",
+                  "value": "Pyro"
+                },
+                {
+                  "key": "rarity",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "Menyaring karakter berelemen Pyro dengan rarity bintang 5."
+          }
+        },
+        {
+          "name": "GET Characters Search & Sort",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/characters?search=Tao&sort_by=base_atk&order=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Tao"
+                },
+                {
+                  "key": "sort_by",
+                  "value": "base_atk"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Mencari karakter dengan keyword nama dan diurutkan berdasarkan Base ATK tertinggi."
+          }
+        },
+        {
+          "name": "GET Character Detail by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/characters/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters", "1"]
+            },
+            "description": "Mengambil detail karakter beserta daftar skill pasif dan aktif (skills_talents)."
+          }
+        },
+        {
+          "name": "POST Create Character (201 Created)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama_karakter\": \"Navia\",\n  \"id_elemen\": 7,\n  \"rarity\": 5,\n  \"tipe_senjata\": \"Claymore\",\n  \"role_utama\": \"Main DPS\",\n  \"base_hp\": 12650,\n  \"base_atk\": 352,\n  \"base_def\": 793,\n  \"ascension_stat\": \"CRIT DMG\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/characters",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters"]
+            },
+            "description": "Menambahkan karakter baru ke dalam database dengan validasi constraint penuh."
+          }
+        },
+        {
+          "name": "POST Create Character - Validation Error (400 Bad Request)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama_karakter\": \"Karakter Salah Rarity\",\n  \"id_elemen\": 1,\n  \"rarity\": 3,\n  \"tipe_senjata\": \"Gun\",\n  \"role_utama\": \"Ninja\",\n  \"base_hp\": -100,\n  \"base_atk\": 0,\n  \"base_def\": -10,\n  \"ascension_stat\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/characters",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters"]
+            },
+            "description": "Menguji respons validasi 400 Bad Request saat mengirim data yang melanggar domain constraint skema."
+          }
+        },
+        {
+          "name": "PUT Update Character (200 OK)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"base_atk\": 350,\n  \"role_utama\": \"Main DPS\",\n  \"ascension_stat\": \"Pyro DMG Bonus\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/characters/7",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters", "7"]
+            },
+            "description": "Memperbarui statistik atau atribut karakter Bennett (ID 7)."
+          }
+        },
+        {
+          "name": "DELETE Character - Foreign Key Violation (409 Conflict)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/characters/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters", "1"]
+            },
+            "description": "Mencoba menghapus karakter ID 1 (Hu Tao) yang masih terikat pada inventori pemain, menghasilkan HTTP 409 Conflict dengan pesan constraint yang informatif."
+          }
+        },
+        {
+          "name": "DELETE Character - Not Found (404 Not Found)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/characters/9999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "characters", "9999"]
+            },
+            "description": "Mencoba menghapus ID karakter yang tidak ada di database."
+          }
+        }
+      ]
+    }
+  ]
+}
