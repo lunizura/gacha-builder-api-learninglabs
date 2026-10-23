@@ -2,6 +2,9 @@ Tugas Akhir: REST API Flask
 Nama: Muhammad Izzul Islam
 GitHub: https://github.com/lunizura
 
+Penjelasan Singkat Proyek:
+Proyek ini adalah RESTful API untuk platform Gacha Character dan Team Builder. Dibangun menggunakan Python Flask dan database PostgreSQL (Supabase) yang di-deploy secara serverless di Vercel. API ini mendukung operasi CRUD lengkap untuk data karakter, filter pencarian dinamis, proteksi integritas relasional, master data elemen dan senjata, serta penggabungan relasi multi-tabel untuk komposisi tim pemain. Seluruh fungsi telah diuji dengan 36 skenario automated testing dan koleksi Postman.
+
 Yang Dikumpulkan:
 1. Link repository (GitHub):
 https://github.com/lunizura/gacha-builder-api-learninglabs
