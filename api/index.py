@@ -44,7 +44,8 @@ def handle_not_found(e):
     return jsonify({
         "status": "error",
         "message": getattr(e, "description", "Resource endpoint atau data tidak ditemukan"),
-        "error_code": "NOT_FOUND"
+        "error_code": "NOT_FOUND",
+        "received_path": request.path
     }), 404
 
 
@@ -71,6 +72,8 @@ def handle_internal_server_error(e):
 # ==============================================================================
 
 @app.route("/", methods=["GET"])
+@app.route("/api", methods=["GET"])
+@app.route("/api/index", methods=["GET"])
 def root():
     """
     Katalog root informasi REST API & navigasi endpoint.
@@ -101,6 +104,7 @@ def root():
 
 
 @app.route("/api/health", methods=["GET"])
+@app.route("/health", methods=["GET"])
 def health():
     """
     Pemeriksaan status uptime server dan konektivitas live database PostgreSQL.
@@ -125,6 +129,7 @@ def health():
 # ==============================================================================
 
 @app.route("/api/elements", methods=["GET"])
+@app.route("/elements", methods=["GET"])
 def get_elements():
     """
     Mengambil seluruh daftar elemen master (Pyro, Hydro, Anemo, Electro, Dendro, Cryo, Geo).
@@ -148,6 +153,7 @@ def get_elements():
 
 
 @app.route("/api/weapons", methods=["GET"])
+@app.route("/weapons", methods=["GET"])
 def get_weapons():
     """
     Mengambil katalog senjata dengan filter opsional (?rarity=5, ?weapon_type=Sword, ?search=Staff).
@@ -207,6 +213,7 @@ def get_weapons():
 
 
 @app.route("/api/teams", methods=["GET"])
+@app.route("/teams", methods=["GET"])
 def get_teams():
     """
     Mengambil daftar komposisi party/tim lengkap dengan join karakter, elemen, senjata,
@@ -272,6 +279,7 @@ def get_teams():
 # ==============================================================================
 
 @app.route("/api/characters", methods=["GET"])
+@app.route("/characters", methods=["GET"])
 def get_characters():
     """
     GET /api/characters
@@ -386,6 +394,7 @@ def get_characters():
 
 
 @app.route("/api/characters/<int:id>", methods=["GET"])
+@app.route("/characters/<int:id>", methods=["GET"])
 def get_character_detail(id):
     """
     GET /api/characters/<id>
@@ -445,6 +454,7 @@ def get_character_detail(id):
 
 
 @app.route("/api/characters", methods=["POST"])
+@app.route("/characters", methods=["POST"])
 def create_character():
     """
     POST /api/characters
@@ -580,6 +590,7 @@ def create_character():
 
 
 @app.route("/api/characters/<int:id>", methods=["PUT"])
+@app.route("/characters/<int:id>", methods=["PUT"])
 def update_character(id):
     """
     PUT /api/characters/<id>
@@ -728,6 +739,7 @@ def update_character(id):
 
 
 @app.route("/api/characters/<int:id>", methods=["DELETE"])
+@app.route("/characters/<int:id>", methods=["DELETE"])
 def delete_character(id):
     """
     DELETE /api/characters/<id>
