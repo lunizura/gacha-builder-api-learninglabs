@@ -29,11 +29,50 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/",
-              "host": ["{{baseUrl}}"],
-              "path": [""]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
             },
             "description": "Mengambil ringkasan metadata API, informasi pembuat, dan katalog endpoint yang tersedia."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                },
+                "description": "Mengambil ringkasan metadata API, informasi pembuat, dan katalog endpoint yang tersedia."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"author\": \"lunizura (Muhammad Izzul Islam)\",\n  \"course\": \"Tugas Akhir Learning Labs: Backend Development\",\n  \"documentation\": {\n    \"endpoints\": {\n      \"characters\": {\n        \"create\": \"POST /api/characters\",\n        \"delete\": \"DELETE /api/characters/<int:id>\",\n        \"detail\": \"GET /api/characters/<int:id>\",\n        \"list\": \"GET /api/characters?element=Pyro&rarity=5\",\n        \"update\": \"PUT /api/characters/<int:id>\"\n      },\n      \"elements\": \"GET /api/elements\",\n      \"health\": \"GET /api/health\",\n      \"teams\": \"GET /api/teams\",\n      \"weapons\": \"GET /api/weapons\"\n    },\n    \"github\": \"https://github.com/lunizura/gacha-builder-api-learninglabs\"\n  },\n  \"project\": \"Gacha Character & Team Builder REST API\",\n  \"status\": \"operational\",\n  \"version\": \"1.0.0\"\n}"
+            }
+          ]
         }
       ]
     },
@@ -52,11 +91,52 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/health",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "health"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
             },
             "description": "Memeriksa status uptime server dan konektivitas live database PostgreSQL (Supabase)."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/health",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "health"
+                  ]
+                },
+                "description": "Memeriksa status uptime server dan konektivitas live database PostgreSQL (Supabase)."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"database\": {\n    \"latency_ms\": 0.5,\n    \"provider\": \"In-Memory Test Store\",\n    \"status\": \"connected (mock)\"\n  },\n  \"environment\": \"production\",\n  \"status\": \"healthy\",\n  \"timestamp\": \"2026-10-24T02:50:41.209475+00:00\",\n  \"uptime_seconds\": 0.07\n}"
+            }
+          ]
         }
       ]
     },
@@ -75,11 +155,52 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/elements",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "elements"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "elements"
+              ]
             },
             "description": "Mengambil 7 elemen master (Pyro, Hydro, Anemo, Electro, Dendro, Cryo, Geo) beserta kode warna hex dan efek reaksi."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/elements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "elements"
+                  ]
+                },
+                "description": "Mengambil 7 elemen master (Pyro, Hydro, Anemo, Electro, Dendro, Cryo, Geo) beserta kode warna hex dan efek reaksi."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"nama_elemen\": \"Pyro\",\n      \"reaksi_efek\": \"Vaporize, Melt, Overloaded, Burgeon\",\n      \"warna_hex\": \"#FF4500\"\n    },\n    {\n      \"id\": 2,\n      \"nama_elemen\": \"Hydro\",\n      \"reaksi_efek\": \"Vaporize, Electro-Charged, Bloom, Freeze\",\n      \"warna_hex\": \"#1E90FF\"\n    },\n    {\n      \"id\": 3,\n      \"nama_elemen\": \"Anemo\",\n      \"reaksi_efek\": \"Swirl\",\n      \"warna_hex\": \"#40E0D0\"\n    },\n    {\n      \"id\": 4,\n      \"nama_elemen\": \"Electro\",\n      \"reaksi_efek\": \"Aggravate, Hyperbloom, Electro-Charged\",\n      \"warna_hex\": \"#8A2BE2\"\n    },\n    {\n      \"id\": 5,\n      \"nama_elemen\": \"Dendro\",\n      \"reaksi_efek\": \"Bloom, Catalyze, Spread, Hyperbloom\",\n      \"warna_hex\": \"#32CD32\"\n    },\n    {\n      \"id\": 6,\n      \"nama_elemen\": \"Cryo\",\n      \"reaksi_efek\": \"Freeze, Melt, Superconduct\",\n      \"warna_hex\": \"#00FFFF\"\n    },\n    {\n      \"id\": 7,\n      \"nama_elemen\": \"Geo\",\n      \"reaksi_efek\": \"Crystallize\",\n      \"warna_hex\": \"#DAA520\"\n    }\n  ],\n  \"message\": \"Berhasil mengambil data elemen\",\n  \"status\": \"success\",\n  \"total\": 7\n}"
+            }
+          ]
         },
         {
           "name": "GET All Weapons",
@@ -93,11 +214,52 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/weapons",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "weapons"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "weapons"
+              ]
             },
             "description": "Mengambil seluruh katalog senjata dalam database."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/weapons",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "weapons"
+                  ]
+                },
+                "description": "Mengambil seluruh katalog senjata dalam database."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": [\n    {\n      \"base_atk\": 608,\n      \"id\": 1,\n      \"nama_senjata\": \"Staff of Homa\",\n      \"pasif_deskripsi\": \"Nambah HP 20% sama bonus ATK kalo darah di bawah 50%\",\n      \"rarity\": 5,\n      \"substat_type\": \"CRIT DMG\",\n      \"substat_value\": 66.2,\n      \"tipe_senjata\": \"Polearm\"\n    },\n    {\n      \"base_atk\": 608,\n      \"id\": 3,\n      \"nama_senjata\": \"Freedom-Sworn\",\n      \"pasif_deskripsi\": \"Buff ATK buat satu tim setelah picu reaksi\",\n      \"rarity\": 5,\n      \"substat_type\": \"Elemental Mastery\",\n      \"substat_value\": 198.0,\n      \"tipe_senjata\": \"Sword\"\n    },\n    {\n      \"base_atk\": 542,\n      \"id\": 2,\n      \"nama_senjata\": \"Splendor of Tranquil Waters\",\n      \"pasif_deskripsi\": \"Buff skill kalo HP naik turun\",\n      \"rarity\": 5,\n      \"substat_type\": \"CRIT DMG\",\n      \"substat_value\": 88.2,\n      \"tipe_senjata\": \"Sword\"\n    },\n    {\n      \"base_atk\": 510,\n      \"id\": 5,\n      \"nama_senjata\": \"The Bell\",\n      \"pasif_deskripsi\": \"Pedang terkutuk yang selalu nongol pas rate-off\",\n      \"rarity\": 4,\n      \"substat_type\": \"HP%\",\n      \"substat_value\": 41.3,\n      \"tipe_senjata\": \"Claymore\"\n    },\n    {\n      \"base_atk\": 401,\n      \"id\": 6,\n      \"nama_senjata\": \"Debate Club\",\n      \"pasif_deskripsi\": \"Palu F2P buat gebuk hilichurl di awal game\",\n      \"rarity\": 3,\n      \"substat_type\": \"ATK%\",\n      \"substat_value\": 35.2,\n      \"tipe_senjata\": \"Claymore\"\n    },\n    {\n      \"base_atk\": 354,\n      \"id\": 4,\n      \"nama_senjata\": \"Black Tassel\",\n      \"pasif_deskripsi\": \"Tombak slime murah meriah andalan tiang zhongli\",\n      \"rarity\": 3,\n      \"substat_type\": \"HP%\",\n      \"substat_value\": 46.9,\n      \"tipe_senjata\": \"Polearm\"\n    }\n  ],\n  \"filters\": {\n    \"rarity\": null,\n    \"search\": null,\n    \"weapon_type\": null\n  },\n  \"message\": \"Berhasil mengambil data senjata\",\n  \"status\": \"success\",\n  \"total\": 6\n}"
+            }
+          ]
         },
         {
           "name": "GET Weapons Filtered (Rarity 5 & Sword)",
@@ -111,8 +273,13 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/weapons?rarity=5&weapon_type=Sword",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "weapons"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "weapons"
+              ],
               "query": [
                 {
                   "key": "rarity",
@@ -125,7 +292,53 @@
               ]
             },
             "description": "Mengambil senjata bintang 5 dengan tipe pedang (Sword)."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/weapons?rarity=5&weapon_type=Sword",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "weapons"
+                  ],
+                  "query": [
+                    {
+                      "key": "rarity",
+                      "value": "5"
+                    },
+                    {
+                      "key": "weapon_type",
+                      "value": "Sword"
+                    }
+                  ]
+                },
+                "description": "Mengambil senjata bintang 5 dengan tipe pedang (Sword)."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": [\n    {\n      \"base_atk\": 608,\n      \"id\": 3,\n      \"nama_senjata\": \"Freedom-Sworn\",\n      \"pasif_deskripsi\": \"Buff ATK buat satu tim setelah picu reaksi\",\n      \"rarity\": 5,\n      \"substat_type\": \"Elemental Mastery\",\n      \"substat_value\": 198.0,\n      \"tipe_senjata\": \"Sword\"\n    },\n    {\n      \"base_atk\": 542,\n      \"id\": 2,\n      \"nama_senjata\": \"Splendor of Tranquil Waters\",\n      \"pasif_deskripsi\": \"Buff skill kalo HP naik turun\",\n      \"rarity\": 5,\n      \"substat_type\": \"CRIT DMG\",\n      \"substat_value\": 88.2,\n      \"tipe_senjata\": \"Sword\"\n    }\n  ],\n  \"filters\": {\n    \"rarity\": \"5\",\n    \"search\": null,\n    \"weapon_type\": \"Sword\"\n  },\n  \"message\": \"Berhasil mengambil data senjata\",\n  \"status\": \"success\",\n  \"total\": 2\n}"
+            }
+          ]
         }
       ]
     },
@@ -144,11 +357,52 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/teams",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "teams"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "teams"
+              ]
             },
             "description": "Mengambil formasi party tim pemain lengkap dengan join relasi karakter, elemen, senjata, dan posisi slot."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/teams",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "teams"
+                  ]
+                },
+                "description": "Mengambil formasi party tim pemain lengkap dengan join relasi karakter, elemen, senjata, dan posisi slot."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": [\n    {\n      \"in_game_uid\": \"801992026\",\n      \"members\": [\n        {\n          \"character_level\": 90,\n          \"constellation_level\": 1,\n          \"nama_elemen\": \"Pyro\",\n          \"nama_karakter\": \"Hu Tao\",\n          \"nama_senjata\": \"Staff of Homa\",\n          \"role_dalam_party\": \"Main DPS yang selalu sekarat\",\n          \"slot_position\": 1\n        },\n        {\n          \"character_level\": 90,\n          \"constellation_level\": 2,\n          \"nama_elemen\": \"Hydro\",\n          \"nama_karakter\": \"Furina\",\n          \"nama_senjata\": \"Splendor of Tranquil Waters\",\n          \"role_dalam_party\": \"Buffer air penyedot darah\",\n          \"slot_position\": 2\n        },\n        {\n          \"character_level\": 90,\n          \"constellation_level\": 0,\n          \"nama_elemen\": \"Anemo\",\n          \"nama_karakter\": \"Kaedehara Kazuha\",\n          \"nama_senjata\": \"Freedom-Sworn\",\n          \"role_dalam_party\": \"Tukang kumpulin musuh & shred resist\",\n          \"slot_position\": 3\n        },\n        {\n          \"character_level\": 90,\n          \"constellation_level\": 0,\n          \"nama_elemen\": \"Geo\",\n          \"nama_karakter\": \"Zhongli\",\n          \"nama_senjata\": \"Black Tassel\",\n          \"role_dalam_party\": \"Bapak pelindung perisai anti mati\",\n          \"slot_position\": 4\n        }\n      ],\n      \"nama_party\": \"Hu Tao Darah Sekarat Asal Jangan Kena Senggol\",\n      \"username\": \"izzul\"\n    }\n  ],\n  \"message\": \"Berhasil mengambil detail formasi tim\",\n  \"status\": \"success\",\n  \"total_slots\": 4,\n  \"total_teams\": 1\n}"
+            }
+          ]
         }
       ]
     },
@@ -167,11 +421,52 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/characters",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters"
+              ]
             },
             "description": "Mengambil seluruh daftar karakter dengan data relasi elemen."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters"
+                  ]
+                },
+                "description": "Mengambil seluruh daftar karakter dengan data relasi elemen."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": [\n    {\n      \"ascension_stat\": \"CRIT DMG\",\n      \"base_atk\": 106,\n      \"base_def\": 876,\n      \"base_hp\": 15552,\n      \"id\": 1,\n      \"id_elemen\": 1,\n      \"nama_elemen\": \"Pyro\",\n      \"nama_karakter\": \"Hu Tao\",\n      \"rarity\": 5,\n      \"reaksi_efek\": \"Vaporize, Melt, Overloaded, Burgeon\",\n      \"role_utama\": \"Main DPS\",\n      \"tipe_senjata\": \"Polearm\",\n      \"warna_hex\": \"#FF4500\"\n    },\n    {\n      \"ascension_stat\": \"CRIT Rate\",\n      \"base_atk\": 244,\n      \"base_def\": 696,\n      \"base_hp\": 15307,\n      \"id\": 2,\n      \"id_elemen\": 2,\n      \"nama_elemen\": \"Hydro\",\n      \"nama_karakter\": \"Furina\",\n      \"rarity\": 5,\n      \"reaksi_efek\": \"Vaporize, Electro-Charged, Bloom, Freeze\",\n      \"role_utama\": \"Sub DPS\",\n      \"tipe_senjata\": \"Sword\",\n      \"warna_hex\": \"#1E90FF\"\n    },\n    {\n      \"ascension_stat\": \"Elemental Mastery\",\n      \"base_atk\": 297,\n      \"base_def\": 807,\n      \"base_hp\": 13348,\n      \"id\": 3,\n      \"id_elemen\": 3,\n      \"nama_elemen\": \"Anemo\",\n      \"nama_karakter\": \"Kaedehara Kazuha\",\n      \"rarity\": 5,\n      \"reaksi_efek\": \"Swirl\",\n      \"role_utama\": \"Support\",\n      \"tipe_senjata\": \"Sword\",\n      \"warna_hex\": \"#40E0D0\"\n    },\n    {\n      \"ascension_stat\": \"Geo DMG Bonus\",\n      \"base_atk\": 251,\n      \"base_def\": 738,\n      \"base_hp\": 14695,\n      \"id\": 4,\n      \"id_elemen\": 7,\n      \"nama_elemen\": \"Geo\",\n      \"nama_karakter\": \"Zhongli\",\n      \"rarity\": 5,\n      \"reaksi_efek\": \"Crystallize\",\n      \"role_utama\": \"Shielder\",\n      \"tipe_senjata\": \"Polearm\",\n      \"warna_hex\": \"#DAA520\"\n    },\n    {\n      \"ascension_stat\": \"Energy Recharge\",\n      \"base_atk\": 337,\n      \"base_def\": 789,\n      \"base_hp\": 12907,\n      \"id\": 5,\n      \"id_elemen\": 4,\n      \"nama_elemen\": \"Electro\",\n      \"nama_karakter\": \"Raiden Shogun\",\n      \"rarity\": 5,\n      \"reaksi_efek\": \"Aggravate, Hyperbloom, Electro-Charged\",\n      \"role_utama\": \"Sub DPS\",\n      \"tipe_senjata\": \"Polearm\",\n      \"warna_hex\": \"#8A2BE2\"\n    },\n    {\n      \"ascension_stat\": \"Healing Bonus\",\n      \"base_atk\": 287,\n      \"base_def\": 922,\n      \"base_hp\": 12118,\n      \"id\": 6,\n      \"id_elemen\": 6,\n      \"nama_elemen\": \"Cryo\",\n      \"nama_karakter\": \"Qiqi\",\n      \"rarity\": 5,\n      \"reaksi_efek\": \"Freeze, Melt, Superconduct\",\n      \"role_utama\": \"Healer\",\n      \"tipe_senjata\": \"Sword\",\n      \"warna_hex\": \"#00FFFF\"\n    },\n    {\n      \"ascension_stat\": \"Energy Recharge\",\n      \"base_atk\": 191,\n      \"base_def\": 771,\n      \"base_hp\": 12397,\n      \"id\": 7,\n      \"id_elemen\": 1,\n      \"nama_elemen\": \"Pyro\",\n      \"nama_karakter\": \"Bennett\",\n      \"rarity\": 4,\n      \"reaksi_efek\": \"Vaporize, Melt, Overloaded, Burgeon\",\n      \"role_utama\": \"Support\",\n      \"tipe_senjata\": \"Sword\",\n      \"warna_hex\": \"#FF4500\"\n    }\n  ],\n  \"filters\": {\n    \"element\": null,\n    \"order\": \"asc\",\n    \"rarity\": null,\n    \"role\": null,\n    \"search\": null,\n    \"sort_by\": \"id\",\n    \"weapon_type\": null\n  },\n  \"message\": \"Berhasil mengambil data karakter\",\n  \"status\": \"success\",\n  \"total\": 7\n}"
+            }
+          ]
         },
         {
           "name": "GET Characters Filtered (Pyro & Rarity 5)",
@@ -185,8 +480,13 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/characters?element=Pyro&rarity=5",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters"
+              ],
               "query": [
                 {
                   "key": "element",
@@ -199,7 +499,53 @@
               ]
             },
             "description": "Menyaring karakter berelemen Pyro dengan rarity bintang 5."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters?element=Pyro&rarity=5",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters"
+                  ],
+                  "query": [
+                    {
+                      "key": "element",
+                      "value": "Pyro"
+                    },
+                    {
+                      "key": "rarity",
+                      "value": "5"
+                    }
+                  ]
+                },
+                "description": "Menyaring karakter berelemen Pyro dengan rarity bintang 5."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": [\n    {\n      \"ascension_stat\": \"CRIT DMG\",\n      \"base_atk\": 106,\n      \"base_def\": 876,\n      \"base_hp\": 15552,\n      \"id\": 1,\n      \"id_elemen\": 1,\n      \"nama_elemen\": \"Pyro\",\n      \"nama_karakter\": \"Hu Tao\",\n      \"rarity\": 5,\n      \"reaksi_efek\": \"Vaporize, Melt, Overloaded, Burgeon\",\n      \"role_utama\": \"Main DPS\",\n      \"tipe_senjata\": \"Polearm\",\n      \"warna_hex\": \"#FF4500\"\n    }\n  ],\n  \"filters\": {\n    \"element\": \"Pyro\",\n    \"order\": \"asc\",\n    \"rarity\": \"5\",\n    \"role\": null,\n    \"search\": null,\n    \"sort_by\": \"id\",\n    \"weapon_type\": null\n  },\n  \"message\": \"Berhasil mengambil data karakter\",\n  \"status\": \"success\",\n  \"total\": 1\n}"
+            }
+          ]
         },
         {
           "name": "GET Characters Search & Sort",
@@ -213,8 +559,13 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/characters?search=Tao&sort_by=base_atk&order=desc",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters"
+              ],
               "query": [
                 {
                   "key": "search",
@@ -231,7 +582,57 @@
               ]
             },
             "description": "Mencari karakter dengan keyword nama dan diurutkan berdasarkan Base ATK tertinggi."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters?search=Tao&sort_by=base_atk&order=desc",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "Tao"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "base_atk"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    }
+                  ]
+                },
+                "description": "Mencari karakter dengan keyword nama dan diurutkan berdasarkan Base ATK tertinggi."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": [\n    {\n      \"ascension_stat\": \"CRIT DMG\",\n      \"base_atk\": 106,\n      \"base_def\": 876,\n      \"base_hp\": 15552,\n      \"id\": 1,\n      \"id_elemen\": 1,\n      \"nama_elemen\": \"Pyro\",\n      \"nama_karakter\": \"Hu Tao\",\n      \"rarity\": 5,\n      \"reaksi_efek\": \"Vaporize, Melt, Overloaded, Burgeon\",\n      \"role_utama\": \"Main DPS\",\n      \"tipe_senjata\": \"Polearm\",\n      \"warna_hex\": \"#FF4500\"\n    }\n  ],\n  \"filters\": {\n    \"element\": null,\n    \"order\": \"desc\",\n    \"rarity\": null,\n    \"role\": null,\n    \"search\": \"Tao\",\n    \"sort_by\": \"base_atk\",\n    \"weapon_type\": null\n  },\n  \"message\": \"Berhasil mengambil data karakter\",\n  \"status\": \"success\",\n  \"total\": 1\n}"
+            }
+          ]
         },
         {
           "name": "GET Character Detail by ID",
@@ -245,11 +646,54 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/characters/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters",
+                "1"
+              ]
             },
             "description": "Mengambil detail karakter beserta daftar skill pasif dan aktif (skills_talents)."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters",
+                    "1"
+                  ]
+                },
+                "description": "Mengambil detail karakter beserta daftar skill pasif dan aktif (skills_talents)."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": {\n    \"ascension_stat\": \"CRIT DMG\",\n    \"base_atk\": 106,\n    \"base_def\": 876,\n    \"base_hp\": 15552,\n    \"id\": 1,\n    \"id_elemen\": 1,\n    \"nama_elemen\": \"Pyro\",\n    \"nama_karakter\": \"Hu Tao\",\n    \"rarity\": 5,\n    \"reaksi_efek\": \"Vaporize, Melt, Overloaded, Burgeon\",\n    \"role_utama\": \"Main DPS\",\n    \"skills\": [\n      {\n        \"cooldown_seconds\": 16.0,\n        \"deskripsi\": \"Masuk mode darah sekarat tapi ATK naik drastis\",\n        \"energy_cost\": 0,\n        \"id\": 1,\n        \"id_character\": 1,\n        \"nama_talent\": \"Guide to Afterlife\",\n        \"tipe_talent\": \"Elemental Skill\"\n      },\n      {\n        \"cooldown_seconds\": 15.0,\n        \"deskripsi\": \"Ngemper damage api nuklir sekalian heal tipis-tipis\",\n        \"energy_cost\": 60,\n        \"id\": 2,\n        \"id_character\": 1,\n        \"nama_talent\": \"Spirit Soother\",\n        \"tipe_talent\": \"Elemental Burst\"\n      }\n    ],\n    \"tipe_senjata\": \"Polearm\",\n    \"warna_hex\": \"#FF4500\"\n  },\n  \"message\": \"Detail karakter berhasil ditemukan\",\n  \"status\": \"success\"\n}"
+            }
+          ]
         },
         {
           "name": "POST Create Character (201 Created)",
@@ -271,11 +715,60 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/characters",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters"
+              ]
             },
             "description": "Menambahkan karakter baru ke dalam database dengan validasi constraint penuh."
-          }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nama_karakter\": \"Navia\",\n  \"id_elemen\": 7,\n  \"rarity\": 5,\n  \"tipe_senjata\": \"Claymore\",\n  \"role_utama\": \"Main DPS\",\n  \"base_hp\": 12650,\n  \"base_atk\": 352,\n  \"base_def\": 793,\n  \"ascension_stat\": \"CRIT DMG\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters"
+                  ]
+                },
+                "description": "Menambahkan karakter baru ke dalam database dengan validasi constraint penuh."
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": {\n    \"ascension_stat\": \"CRIT DMG\",\n    \"base_atk\": 352,\n    \"base_def\": 793,\n    \"base_hp\": 12650,\n    \"id\": 8,\n    \"id_elemen\": 7,\n    \"nama_elemen\": \"Geo\",\n    \"nama_karakter\": \"Navia\",\n    \"rarity\": 5,\n    \"role_utama\": \"Main DPS\",\n    \"tipe_senjata\": \"Claymore\",\n    \"warna_hex\": \"#DAA520\"\n  },\n  \"message\": \"Karakter 'Navia' berhasil dibuat\",\n  \"status\": \"success\"\n}"
+            }
+          ]
         },
         {
           "name": "POST Create Character - Validation Error (400 Bad Request)",
@@ -297,11 +790,60 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/characters",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters"
+              ]
             },
             "description": "Menguji respons validasi 400 Bad Request saat mengirim data yang melanggar domain constraint skema."
-          }
+          },
+          "response": [
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nama_karakter\": \"Karakter Salah Rarity\",\n  \"id_elemen\": 1,\n  \"rarity\": 3,\n  \"tipe_senjata\": \"Gun\",\n  \"role_utama\": \"Ninja\",\n  \"base_hp\": -100,\n  \"base_atk\": 0,\n  \"base_def\": -10,\n  \"ascension_stat\": \"\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters"
+                  ]
+                },
+                "description": "Menguji respons validasi 400 Bad Request saat mengirim data yang melanggar domain constraint skema."
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errors\": [\n    \"Field 'rarity' wajib bernilai 4 atau 5\",\n    \"Field 'tipe_senjata' harus salah satu dari: Bow, Catalyst, Claymore, Polearm, Sword\",\n    \"Field 'role_utama' harus salah satu dari: Healer, Main DPS, Shielder, Sub DPS, Support\",\n    \"Field 'base_hp' wajib berupa integer positif (> 0)\",\n    \"Field 'base_atk' wajib berupa integer positif (> 0)\",\n    \"Field 'base_def' wajib berupa integer positif (> 0)\",\n    \"Field 'ascension_stat' wajib diisi (contoh: 'CRIT DMG', 'Elemental Mastery')\"\n  ],\n  \"message\": \"Validasi input gagal\",\n  \"status\": \"error\"\n}"
+            }
+          ]
         },
         {
           "name": "PUT Update Character (200 OK)",
@@ -323,11 +865,62 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/characters/7",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters", "7"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters",
+                "7"
+              ]
             },
             "description": "Memperbarui statistik atau atribut karakter Bennett (ID 7)."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"base_atk\": 350,\n  \"role_utama\": \"Main DPS\",\n  \"ascension_stat\": \"Pyro DMG Bonus\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters/7",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters",
+                    "7"
+                  ]
+                },
+                "description": "Memperbarui statistik atau atribut karakter Bennett (ID 7)."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"data\": {\n    \"ascension_stat\": \"Pyro DMG Bonus\",\n    \"base_atk\": 350,\n    \"base_def\": 771,\n    \"base_hp\": 12397,\n    \"id\": 7,\n    \"id_elemen\": 1,\n    \"nama_elemen\": \"Pyro\",\n    \"nama_karakter\": \"Bennett\",\n    \"rarity\": 4,\n    \"role_utama\": \"Main DPS\",\n    \"tipe_senjata\": \"Sword\",\n    \"warna_hex\": \"#FF4500\"\n  },\n  \"message\": \"Data karakter ID 7 berhasil diperbarui\",\n  \"status\": \"success\"\n}"
+            }
+          ]
         },
         {
           "name": "DELETE Character - Foreign Key Violation (409 Conflict)",
@@ -341,11 +934,54 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/characters/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters", "1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters",
+                "1"
+              ]
             },
             "description": "Mencoba menghapus karakter ID 1 (Hu Tao) yang masih terikat pada inventori pemain, menghasilkan HTTP 409 Conflict dengan pesan constraint yang informatif."
-          }
+          },
+          "response": [
+            {
+              "name": "409 Conflict",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters",
+                    "1"
+                  ]
+                },
+                "description": "Mencoba menghapus karakter ID 1 (Hu Tao) yang masih terikat pada inventori pemain, menghasilkan HTTP 409 Conflict dengan pesan constraint yang informatif."
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error_code\": \"FOREIGN_KEY_VIOLATION\",\n  \"message\": \"Tidak dapat menghapus karakter ID 1 karena masih terdaftar dalam inventori karakter pemain (Foreign Key Constraint: player_inventory_characters).\",\n  \"status\": \"error\"\n}"
+            }
+          ]
         },
         {
           "name": "DELETE Character - Not Found (404 Not Found)",
@@ -359,11 +995,54 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/characters/9999",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters", "9999"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters",
+                "9999"
+              ]
             },
             "description": "Mencoba menghapus ID karakter yang tidak ada di database."
-          }
+          },
+          "response": [
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters/9999",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters",
+                    "9999"
+                  ]
+                },
+                "description": "Mencoba menghapus ID karakter yang tidak ada di database."
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Karakter dengan ID 9999 tidak ditemukan\",\n  \"status\": \"error\"\n}"
+            }
+          ]
         },
         {
           "name": "DELETE Character - Success (200 OK)",
@@ -377,11 +1056,54 @@
             ],
             "url": {
               "raw": "{{baseUrl}}/api/characters/8",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "characters", "8"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "characters",
+                "8"
+              ]
             },
             "description": "Menghapus karakter yang baru dibuat (ID 8) yang belum terikat ke inventori pemain, menghasilkan HTTP 200 OK."
-          }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/characters/8",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "characters",
+                    "8"
+                  ]
+                },
+                "description": "Menghapus karakter yang baru dibuat (ID 8) yang belum terikat ke inventori pemain, menghasilkan HTTP 200 OK."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"deleted_id\": 8,\n  \"message\": \"Karakter 'Navia' (ID 8) berhasil dihapus\",\n  \"status\": \"success\"\n}"
+            }
+          ]
         }
       ]
     }

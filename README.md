@@ -620,6 +620,166 @@ Mengambil komposisi formasi tim dari PostgreSQL View `v_party_team_details`.
 
 ---
 
+#### 7. GET `/` (Root Index & API Catalog)
+Mengambil ringkasan informasi API, nama pengembang, status mesin database aktif, serta daftar rute navigasi publik.
+
+- **Contoh Request**:
+  ```http
+  GET / HTTP/1.1
+  Host: 127.0.0.1:5000
+  Accept: application/json
+  ```
+
+- **Contoh Response 200 OK**:
+  ```json
+  {
+    "status": "success",
+    "message": "Selamat datang di REST API Gacha Character & Team Builder",
+    "api": "Gacha Character & Team Builder REST API",
+    "version": "1.0.0",
+    "author": "Muhammad Izzul Islam (izu / lunizura)",
+    "database": {
+      "engine": "PostgreSQL (Supabase)",
+      "status": "connected"
+    },
+    "endpoints": {
+      "health": "/api/health",
+      "elements": "/api/elements",
+      "weapons": "/api/weapons",
+      "characters": "/api/characters",
+      "teams": "/api/teams"
+    }
+  }
+  ```
+
+#### 8. GET `/api/health` (Health & Uptime Monitoring)
+Memeriksa kesehatan server backend, durasi uptime server dalam detik, waktu server UTC, dan verifikasi konektivitas langsung ke kluster PostgreSQL Supabase.
+
+- **Contoh Request**:
+  ```http
+  GET /api/health HTTP/1.1
+  Host: 127.0.0.1:5000
+  Accept: application/json
+  ```
+
+- **Contoh Response 200 OK**:
+  ```json
+  {
+    "status": "healthy",
+    "environment": "production",
+    "uptime_seconds": 384,
+    "server_time_utc": "2026-10-24T02:51:30Z",
+    "database": {
+      "status": "connected",
+      "mode": "live_postgres",
+      "engine": "PostgreSQL (Supabase)"
+    }
+  }
+  ```
+
+#### 9. GET `/api/elements` (Master Data Elemen)
+Mengambil daftar 7 elemen master (*Pyro, Hydro, Anemo, Electro, Dendro, Cryo, Geo*) beserta nilai kode hex warna tampilan dan efek reaksi elemennya.
+
+- **Contoh Request**:
+  ```http
+  GET /api/elements HTTP/1.1
+  Host: 127.0.0.1:5000
+  Accept: application/json
+  ```
+
+- **Contoh Response 200 OK**:
+  ```json
+  {
+    "status": "success",
+    "message": "Berhasil mengambil master elemen",
+    "total": 7,
+    "data": [
+      {
+        "id": 1,
+        "nama_elemen": "Pyro",
+        "warna_hex": "#FF4500",
+        "reaksi_efek": "Vaporize, Melt, Overloaded, Burning, Burgeon"
+      },
+      {
+        "id": 2,
+        "nama_elemen": "Hydro",
+        "warna_hex": "#1E90FF",
+        "reaksi_efek": "Vaporize, Electro-Charged, Frozen, Bloom"
+      },
+      {
+        "id": 3,
+        "nama_elemen": "Anemo",
+        "warna_hex": "#40E0D0",
+        "reaksi_efek": "Swirl (Menyebarkan elemen lain dan menurunkan RES musuh)"
+      },
+      {
+        "id": 4,
+        "nama_elemen": "Electro",
+        "warna_hex": "#8A2BE2",
+        "reaksi_efek": "Overloaded, Electro-Charged, Superconduct, Quicken, Aggravate, Hyperbloom"
+      },
+      {
+        "id": 5,
+        "nama_elemen": "Dendro",
+        "warna_hex": "#32CD32",
+        "reaksi_efek": "Bloom, Hyperbloom, Burgeon, Quicken, Spread"
+      },
+      {
+        "id": 6,
+        "nama_elemen": "Cryo",
+        "warna_hex": "#00FFFF",
+        "reaksi_efek": "Melt, Frozen, Superconduct"
+      },
+      {
+        "id": 7,
+        "nama_elemen": "Geo",
+        "warna_hex": "#DAA520",
+        "reaksi_efek": "Crystallize (Menciptakan elemental shield pelindung)"
+      }
+    ]
+  }
+  ```
+
+#### 10. GET `/api/weapons` (Master Katalog Senjata & Filtering)
+Mengambil katalog data senjata dengan dukungan query parameter untuk menyaring berdasarkan *rarity* bintang dan tipe senjata (*Sword, Claymore, Polearm, Bow, Catalyst*).
+
+- **Query Parameters**:
+  - `rarity` *(integer, opsional)*: Bintang senjata (`4` atau `5`).
+  - `weapon_type` *(string, opsional)*: `Sword`, `Claymore`, `Polearm`, `Bow`, `Catalyst`.
+
+- **Contoh Request**:
+  ```http
+  GET /api/weapons?rarity=5&weapon_type=Polearm HTTP/1.1
+  Host: 127.0.0.1:5000
+  Accept: application/json
+  ```
+
+- **Contoh Response 200 OK**:
+  ```json
+  {
+    "status": "success",
+    "message": "Berhasil mengambil data senjata",
+    "filters": {
+      "rarity": "5",
+      "weapon_type": "Polearm"
+    },
+    "total": 1,
+    "data": [
+      {
+        "id": 1,
+        "nama_senjata": "Staff of Homa",
+        "tipe_senjata": "Polearm",
+        "rarity": 5,
+        "base_atk": 608,
+        "sub_stat": "CRIT DMG 66.2%",
+        "passive_desc": "Meningkatkan HP sebesar 20%. Memberikan bonus ATK berdasarkan 0.8% dari Max HP pengguna."
+      }
+    ]
+  }
+  ```
+
+---
+
 ## 🧪 Pengujian Otomatis (Automated Testing)
 
 Proyek ini dilengkapi test suite komprehensif pada file `test_api.py` yang mencakup **36 skenario pengujian** menggunakan modul bawaan `unittest` dan Flask Test Client:
