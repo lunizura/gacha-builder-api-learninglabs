@@ -4,7 +4,8 @@
 [![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![Flask Framework](https://img.shields.io/badge/Framework-Flask%203.1-green?logo=flask)](https://flask.palletsprojects.com/)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL%20(Supabase)-336791?logo=postgresql)](https://supabase.com)
-[![Tests](https://img.shields.io/badge/Automated%20Tests-36%20Passed-brightgreen)](test_api.py)
+[![Tests](https://img.shields.io/badge/Automated%20Tests-37%20Passed-brightgreen)](test_api.py)
+[![Frontend UI](https://img.shields.io/badge/Frontend%20UI-Live%20Dashboard-orange)](https://gacha-builder-api-learninglabs.vercel.app/ui)
 
 Proyek ini merupakan implementasi **Tugas Akhir Learning Labs: Backend Development** yang mengusung arsitektur RESTful API skala produksi untuk platform manajemen karakter gacha, inventori pemain, dan pembentukan tim genshin (*team builder / Spiral Abyss*). (which is just for example dont take it seriously)
 
@@ -218,6 +219,7 @@ gacha-builder-api-learninglabs/
 ├── api/
 │   ├── __init__.py           # Package marker
 │   ├── db.py                 # Driver koneksi PostgreSQL, RealDictCursor, dan Mock Storage
+│   ├── frontend.py           # Single Page Application Web UI generator (vanilla HTML5/CSS3/JS)
 │   └── index.py              # Serverless WSGI entrypoint Flask & seluruh rute REST API
 ├── database/
 │   └── schema.sql            # File DDL SQL PostgreSQL 14+ lengkap (14 Tabel + View + Seed Data)
@@ -226,7 +228,7 @@ gacha-builder-api-learninglabs/
 ├── app.py                    # Runner lokal Flask (python app.py)
 ├── postman_collection.json   # Koleksi Postman v2.1 siap pakai (1-Click Import)
 ├── requirements.txt          # Dependensi Python (flask, psycopg2-binary, python-dotenv)
-├── test_api.py               # Test suite otomatis (30 skenario pengujian komprehensif)
+├── test_api.py               # Test suite otomatis (37 skenario pengujian komprehensif)
 ├── vercel.json               # Konfigurasi routing serverless Vercel
 └── README.md                 # Dokumentasi teknis proyek
 ```
@@ -877,12 +879,13 @@ Fitur-fitur berikut merupakan inisiatif pengembangan tingkat lanjut yang melampa
 | No | Fitur Nilai Tambah (Extra) | Deskripsi & Implementasi Teknis | Manfaat / Nilai Tambah |
 | :---: | :--- | :--- | :--- |
 | **1** | **Skema 14 Tabel Lengkap** | Mengembangkan arsitektur 14 tabel (bukan hanya 5): mencakup talenta, katalog senjata, set artefak, inventori pemain, banner gacha, pity history, dan rekor Spiral Abyss. | Pemodelan domain yang komprehensif dan mendekati sistem game produksi nyata. |
-| **2** | **36 Skenario Automated Testing** | Menyediakan automated unit & integration test suite pada `test_api.py` yang mencakup edge-cases, validasi tipe data, proteksi SQL Injection, dan sanitasi payload. | Menjamin kualitas kode tanpa bug (*regression-free*) yang dapat diuji kapan saja dengan `python test_api.py`. |
+| **2** | **37 Skenario Automated Testing** | Menyediakan automated unit & integration test suite pada `test_api.py` yang mencakup edge-cases, validasi tipe data, proteksi SQL Injection, sanitasi payload, serta content negotiation Web UI. | Menjamin kualitas kode tanpa bug (*regression-free*) yang dapat diuji kapan saja dengan `python test_api.py`. |
 | **3** | **In-Memory Mock Database Fallback** | Modul `api/db.py` dilengkapi sistem in-memory mock otomatis yang aktif jika koneksi jaringan ke database cloud mengalami kendala/timeout. | Sistem tetap *resilient* dan pengujian otomatis dapat berjalan kilat tanpa ketergantungan internet. |
 | **4** | **Endpoint Monitoring `/api/health`** | Endpoint pemantauan uptime server dalam detik, environment aktif, dan verifikasi latensi koneksi langsung ke PostgreSQL Supabase. | Standar pemantauan sistem (*observability & health check*) level industri. |
 | **5** | **Database View Multi-Table JOIN (`/api/teams`)** | Memanfaatkan PostgreSQL View `v_party_team_details` yang menggabungkan 6 tabel relasional (tim, slot anggota, karakter, elemen, inventori, senjata). | Efisiensi query tingkat lanjut tanpa pemrosesan berulang di level aplikasi. |
 | **6** | **Dynamic Sorting & Advanced Filtering** | Mendukung filter multi-parameter (`?element=...&rarity=...`), pencarian teks (`?search=...`), dan dynamic sorting aman (`?sort_by=...&order=...`) yang diproteksi whitelist. | Memberikan pengalaman eksplorasi data yang fleksibel bagi pengguna API. |
 | **7** | **Embedded Test Scripts di Postman** | Setiap request pada `postman_collection.json` dilengkapi JavaScript assertion otomatis (`pm.test`) untuk validasi status code dan format JSON. | Memudahkan asisten laboratorium memvalidasi seluruh endpoint hanya dengan satu kali klik *Run Collection*. |
+| **8** | **Interactive Web UI Dashboard (`/ui`)** | Menyediakan antarmuka visual Single Page Application (SPA) responsif modern bertema dark/gacha aesthetic (vanilla HTML5/CSS3/JS) yang dapat diakses di `/` dan `/ui` untuk melihat karakter, filter elemen, form tambah karakter interaktif (POST), inspeksi formasi tim pemain, dan live health monitor. | Memudahkan evaluator/asisten menguji dan mendemonstrasikan seluruh fitur REST API secara visual tanpa harus membuka Postman atau curl. |
 
 ---
 

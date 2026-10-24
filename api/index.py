@@ -1,13 +1,15 @@
 import os
 import time
 from datetime import datetime, timezone
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import psycopg2
 
 try:
     from api.db import get_db_cursor, serialize_data, check_db_health, USE_MOCK_DB
+    from api.frontend import get_frontend_html
 except ImportError:
     from db import get_db_cursor, serialize_data, check_db_health, USE_MOCK_DB
+    from frontend import get_frontend_html
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
@@ -95,10 +97,34 @@ def handle_internal_server_error(e):
 @app.route("/", methods=["GET"])
 @app.route("/api", methods=["GET"])
 @app.route("/api/index", methods=["GET"])
+@app.route("/ui", methods=["GET"])
+@app.route("/app", methods=["GET"])
 def root():
     """
-    Katalog root informasi REST API & navigasi endpoint.
+    Katalog root informasi REST API & antarmuka web interaktif (Single Page Application).
+    - Browser (Accept: text/html) atau rute /ui & /app: mengembalikan Web UI interaktif.
+    - API Client (cURL, Postman, test client, Accept: application/json): mengembalikan JSON catalog.
+    - Format eksplisit via query string: ?format=html atau ?format=json.
     """
+    format_arg = request.args.get("format", "").lower()
+    accept_header = request.headers.get("Accept", "")
+
+    wants_html = False
+    if format_arg == "html":
+        wants_html = True
+    elif format_arg == "json":
+        wants_html = False
+    elif request.path in ("/ui", "/app"):
+        wants_html = True
+    elif request.path in ("/api", "/api/index"):
+        wants_html = False
+    elif accept_header and "text/html" in accept_header and not (accept_header.startswith("application/json") or accept_header.startswith("*/*")):
+        # Permintaan langsung dari web browser pengguna
+        wants_html = True
+
+    if wants_html:
+        return Response(get_frontend_html(), mimetype="text/html; charset=utf-8"), 200
+
     return jsonify({
         "project": "Gacha Character & Team Builder REST API",
         "course": "Tugas Akhir Learning Labs: Backend Development",
@@ -107,6 +133,7 @@ def root():
         "status": "operational",
         "documentation": {
             "github": "https://github.com/lunizura/gacha-builder-api-learninglabs",
+            "frontend_ui": "GET /ui (Interactive Web App)",
             "endpoints": {
                 "health": "GET /api/health",
                 "elements": "GET /api/elements",

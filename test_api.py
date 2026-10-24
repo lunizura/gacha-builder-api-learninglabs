@@ -538,6 +538,48 @@ class GachaApiTestCase(unittest.TestCase):
         self.assertEqual(data["tipe_senjata"], "Polearm")
         self.assertEqual(data["role_utama"], "Healer")
 
+    # ==========================================================================
+    # 7. PENGUJIAN FRONTEND UI & CONTENT NEGOTIATION
+    # ==========================================================================
+
+    def test_37_frontend_ui_endpoints(self):
+        """Memastikan endpoint UI (/ui, /app, /?format=html, browser headers) mengembalikan HTML Web UI."""
+        # Test endpoint /ui
+        resp_ui = self.client.get("/ui")
+        self.assertEqual(resp_ui.status_code, 200)
+        self.assertIn("text/html", resp_ui.content_type)
+        self.assertIn(b"Gacha Character & Team Builder", resp_ui.data)
+        self.assertIn(b"characters-grid", resp_ui.data)
+
+        # Test endpoint /app
+        resp_app = self.client.get("/app")
+        self.assertEqual(resp_app.status_code, 200)
+        self.assertIn("text/html", resp_app.content_type)
+
+        # Test query parameter ?format=html
+        resp_html = self.client.get("/?format=html")
+        self.assertEqual(resp_html.status_code, 200)
+        self.assertIn("text/html", resp_html.content_type)
+
+        # Test browser Accept header
+        browser_headers = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"}
+        resp_browser = self.client.get("/", headers=browser_headers)
+        self.assertEqual(resp_browser.status_code, 200)
+        self.assertIn("text/html", resp_browser.content_type)
+
+        # Test explicit JSON format
+        resp_json = self.client.get("/?format=json")
+        self.assertEqual(resp_json.status_code, 200)
+        self.assertIn("application/json", resp_json.content_type)
+        data = resp_json.get_json()
+        self.assertEqual(data["status"], "operational")
+
+        # Test /api endpoint
+        resp_api = self.client.get("/api")
+        self.assertEqual(resp_api.status_code, 200)
+        self.assertIn("application/json", resp_api.content_type)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
