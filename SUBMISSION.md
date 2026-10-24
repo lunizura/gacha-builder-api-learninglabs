@@ -3,7 +3,7 @@ Nama: Muhammad Izzul Islam
 GitHub: https://github.com/lunizura
 
 Penjelasan Singkat Proyek:
-Proyek ini adalah RESTful API untuk platform Gacha Character dan Team Builder. Dibangun menggunakan Python Flask dan database PostgreSQL (Supabase) yang di-deploy secara serverless di Vercel. API ini mendukung operasi CRUD lengkap untuk data karakter, filter pencarian dinamis, proteksi integritas relasional, master data elemen dan senjata, serta penggabungan relasi multi-tabel untuk komposisi tim pemain. Seluruh fungsi telah diuji dengan 37 skenario automated testing dan koleksi Postman, serta dilengkapi dengan antarmuka Frontend Web UI interaktif yang dapat langsung diakses di https://gacha-builder-api-learninglabs.vercel.app/ui.
+Proyek ini adalah RESTful API untuk platform Gacha Character dan Team Builder. Dibangun menggunakan Python Flask dan database PostgreSQL (Supabase) yang di-deploy secara serverless di Vercel. API ini mendukung operasi CRUD lengkap untuk data karakter, filter pencarian dinamis, proteksi integritas relasional, master data elemen dan senjata, serta penggabungan relasi multi-tabel untuk komposisi tim pemain. Seluruh fungsi telah diuji dengan 38 skenario automated testing dan koleksi Postman, serta dilengkapi dengan antarmuka Frontend Web UI interaktif yang dapat langsung diakses di https://gacha-builder-api-learninglabs.vercel.app/ui.
 
 Yang Dikumpulkan:
 1. Link repository (GitHub):

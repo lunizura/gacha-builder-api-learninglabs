@@ -123,7 +123,7 @@ def root():
         wants_html = True
 
     if wants_html:
-        return Response(get_frontend_html(), mimetype="text/html; charset=utf-8"), 200
+        return Response(get_frontend_html(), mimetype="text/html"), 200
 
     return jsonify({
         "project": "Gacha Character & Team Builder REST API",

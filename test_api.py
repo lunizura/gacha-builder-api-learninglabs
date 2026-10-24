@@ -547,37 +547,82 @@ class GachaApiTestCase(unittest.TestCase):
         # Test endpoint /ui
         resp_ui = self.client.get("/ui")
         self.assertEqual(resp_ui.status_code, 200)
-        self.assertIn("text/html", resp_ui.content_type)
+        self.assertEqual(resp_ui.content_type, "text/html; charset=utf-8")
         self.assertIn(b"Gacha Character & Team Builder", resp_ui.data)
         self.assertIn(b"characters-grid", resp_ui.data)
 
         # Test endpoint /app
         resp_app = self.client.get("/app")
         self.assertEqual(resp_app.status_code, 200)
-        self.assertIn("text/html", resp_app.content_type)
+        self.assertEqual(resp_app.content_type, "text/html; charset=utf-8")
 
         # Test query parameter ?format=html
         resp_html = self.client.get("/?format=html")
         self.assertEqual(resp_html.status_code, 200)
-        self.assertIn("text/html", resp_html.content_type)
+        self.assertEqual(resp_html.content_type, "text/html; charset=utf-8")
 
         # Test browser Accept header
         browser_headers = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"}
         resp_browser = self.client.get("/", headers=browser_headers)
         self.assertEqual(resp_browser.status_code, 200)
-        self.assertIn("text/html", resp_browser.content_type)
+        self.assertEqual(resp_browser.content_type, "text/html; charset=utf-8")
 
         # Test explicit JSON format
         resp_json = self.client.get("/?format=json")
         self.assertEqual(resp_json.status_code, 200)
-        self.assertIn("application/json", resp_json.content_type)
+        self.assertEqual(resp_json.content_type, "application/json")
         data = resp_json.get_json()
         self.assertEqual(data["status"], "operational")
 
         # Test /api endpoint
         resp_api = self.client.get("/api")
         self.assertEqual(resp_api.status_code, 200)
-        self.assertIn("application/json", resp_api.content_type)
+        self.assertEqual(resp_api.content_type, "application/json")
+
+    def test_38_character_with_special_characters_handling(self):
+        """Memastikan karakter dengan apostrof/kutip nama berhasil di-CRUD dan di-render aman."""
+        payload = {
+            "nama_karakter": "Kaedehara Kazuha's Friend",
+            "id_elemen": 3,  # Anemo
+            "rarity": 4,
+            "tipe_senjata": "Sword",
+            "role_utama": "Sub DPS",
+            "base_hp": 11500,
+            "base_atk": 210,
+            "base_def": 680,
+            "ascension_stat": "Elemental Mastery"
+        }
+        # 1. Create
+        create_res = self.client.post("/api/characters", json=payload)
+        self.assertEqual(create_res.status_code, 201)
+        created_id = create_res.get_json()["data"]["id"]
+
+        # 2. Get Detail
+        detail_res = self.client.get(f"/api/characters/{created_id}")
+        self.assertEqual(detail_res.status_code, 200)
+        self.assertEqual(detail_res.get_json()["data"]["nama_karakter"], "Kaedehara Kazuha's Friend")
+
+        # 3. Update
+        update_res = self.client.put(f"/api/characters/{created_id}", json={
+            "nama_karakter": "D'Artagnan",
+            "ascension_stat": "CRIT Rate"
+        })
+        self.assertEqual(update_res.status_code, 200)
+        self.assertEqual(update_res.get_json()["data"]["nama_karakter"], "D'Artagnan")
+
+        # 4. Search
+        search_res = self.client.get("/api/characters?search=D'Artagnan")
+        self.assertEqual(search_res.status_code, 200)
+        self.assertGreaterEqual(len(search_res.get_json()["data"]), 1)
+
+        # 5. Delete
+        del_res = self.client.delete(f"/api/characters/{created_id}")
+        self.assertEqual(del_res.status_code, 200)
+
+        # 6. Verify Frontend HTML contains cache map and escapeHtml fix
+        html_res = self.client.get("/ui")
+        self.assertIn(b"charactersCache", html_res.data)
+        self.assertIn(b"if (str === null || str === undefined) return '';", html_res.data)
 
 
 if __name__ == "__main__":

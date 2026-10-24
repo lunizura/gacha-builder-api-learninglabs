@@ -1373,8 +1373,10 @@ def get_frontend_html():
   <script>
     // State Aplikasi
     let elementsList = [];
+    let charactersCache = new Map();
     let currentSelectedElement = "";
     let debounceTimer = null;
+    let healthInterval = null;
 
     // Element Color Map Fallback
     const ELEMENT_COLORS = {
@@ -1389,7 +1391,7 @@ def get_frontend_html():
 
     // Helper: Escape HTML string to prevent XSS
     function escapeHtml(str) {
-      if (!str) return '';
+      if (str === null || str === undefined) return '';
       return String(str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -1416,7 +1418,11 @@ def get_frontend_html():
     // Modal Handlers
     function openModal(id) {
       const modal = document.getElementById(id);
-      if (modal) modal.classList.add('open');
+      if (modal) {
+        modal.classList.add('open');
+        const firstInput = modal.querySelector('input:not([type=hidden]), select');
+        if (firstInput) setTimeout(() => firstInput.focus(), 50);
+      }
     }
 
     function closeModal(id) {
@@ -1558,6 +1564,9 @@ def get_frontend_html():
         }
 
         const characters = json.data || [];
+        charactersCache.clear();
+        characters.forEach(char => charactersCache.set(char.id, char));
+
         document.getElementById('badge-characters').textContent = json.total;
         document.getElementById('stat-total-chars').textContent = json.total;
 
@@ -1601,15 +1610,15 @@ def get_frontend_html():
               <div class="char-stats-table">
                 <div class="stat-item">
                   <span class="stat-label">Base HP</span>
-                  <span class="stat-val">${char.base_hp.toLocaleString()}</span>
+                  <span class="stat-val">${(Number(char.base_hp) || 0).toLocaleString()}</span>
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">Base ATK</span>
-                  <span class="stat-val">${char.base_atk.toLocaleString()}</span>
+                  <span class="stat-val">${(Number(char.base_atk) || 0).toLocaleString()}</span>
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">Base DEF</span>
-                  <span class="stat-val">${char.base_def.toLocaleString()}</span>
+                  <span class="stat-val">${(Number(char.base_def) || 0).toLocaleString()}</span>
                 </div>
                 <div class="stat-item">
                   <span class="stat-label">Ascension</span>
@@ -1621,10 +1630,10 @@ def get_frontend_html():
                 <button class="btn btn-secondary btn-sm" style="flex:1" onclick="viewCharacterDetail(${char.id})">
                   ✦ Skills & Detail
                 </button>
-                <button class="btn btn-secondary btn-sm" title="Edit Karakter" onclick="openEditModal(${JSON.stringify(char).replace(/"/g, '&quot;')})">
+                <button class="btn btn-secondary btn-sm" title="Edit Karakter" onclick="openEditModal(${char.id})">
                   ✏
                 </button>
-                <button class="btn btn-danger btn-sm" title="Hapus Karakter" onclick="deleteCharacter(${char.id}, '${escapeHtml(char.nama_karakter)}')">
+                <button class="btn btn-danger btn-sm" title="Hapus Karakter" onclick="deleteCharacter(${char.id})">
                   🗑
                 </button>
               </div>
@@ -1663,7 +1672,7 @@ def get_frontend_html():
 
         const char = json.data;
         const elColor = char.warna_hex || ELEMENT_COLORS[char.nama_elemen] || '#94a3b8';
-        title.innerHTML = `${escapeHtml(char.nama_karakter)} <span style="font-size:0.85rem; color:${elColor}">[${char.nama_elemen}]</span>`;
+        title.innerHTML = `${escapeHtml(char.nama_karakter)} <span style="font-size:0.85rem; color:${elColor}">[${escapeHtml(char.nama_elemen)}]</span>`;
 
         let skillsHtml = '';
         if (char.skills && char.skills.length > 0) {
@@ -1675,8 +1684,8 @@ def get_frontend_html():
               </div>
               <p style="font-size:0.8rem; color:var(--text-dim); line-height:1.45; margin-bottom:0.4rem;">${escapeHtml(skill.deskripsi)}</p>
               <div style="display:flex; gap:1rem; font-size:0.75rem; color:var(--text-muted);">
-                ${skill.cooldown_seconds ? `<span>⏱ Cooldown: <strong>${skill.cooldown_seconds}s</strong></span>` : ''}
-                ${skill.energy_cost ? `<span>⚡ Energy Cost: <strong>${skill.energy_cost}</strong></span>` : ''}
+                ${(skill.cooldown_seconds !== null && skill.cooldown_seconds !== undefined) ? `<span>⏱ Cooldown: <strong>${skill.cooldown_seconds}s</strong></span>` : ''}
+                ${(skill.energy_cost !== null && skill.energy_cost !== undefined) ? `<span>⚡ Energy Cost: <strong>${skill.energy_cost}</strong></span>` : ''}
               </div>
             </div>
           `).join('');
@@ -1688,9 +1697,9 @@ def get_frontend_html():
           <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; background:rgba(10,14,23,0.5); padding:1rem; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); font-size:0.85rem;">
             <div><span style="color:var(--text-muted);">Tipe Senjata:</span> <strong>${escapeHtml(char.tipe_senjata)}</strong></div>
             <div><span style="color:var(--text-muted);">Role Utama:</span> <strong>${escapeHtml(char.role_utama)}</strong></div>
-            <div><span style="color:var(--text-muted);">Base HP:</span> <strong>${char.base_hp.toLocaleString()}</strong></div>
-            <div><span style="color:var(--text-muted);">Base ATK:</span> <strong>${char.base_atk.toLocaleString()}</strong></div>
-            <div><span style="color:var(--text-muted);">Base DEF:</span> <strong>${char.base_def.toLocaleString()}</strong></div>
+            <div><span style="color:var(--text-muted);">Base HP:</span> <strong>${(Number(char.base_hp) || 0).toLocaleString()}</strong></div>
+            <div><span style="color:var(--text-muted);">Base ATK:</span> <strong>${(Number(char.base_atk) || 0).toLocaleString()}</strong></div>
+            <div><span style="color:var(--text-muted);">Base DEF:</span> <strong>${(Number(char.base_def) || 0).toLocaleString()}</strong></div>
             <div><span style="color:var(--text-muted);">Ascension Stat:</span> <strong style="color:var(--primary)">${escapeHtml(char.ascension_stat)}</strong></div>
             <div style="grid-column: 1 / -1;"><span style="color:var(--text-muted);">Efek Reaksi Elemen:</span> <em>${escapeHtml(char.reaksi_efek || '-')}</em></div>
           </div>
@@ -1707,6 +1716,8 @@ def get_frontend_html():
 
     // 5. Add / Edit Character Modal
     function openAddModal() {
+      const form = document.getElementById('character-form');
+      if (form) form.reset();
       document.getElementById('modal-title').textContent = 'Tambah Karakter Baru';
       document.getElementById('char-id').value = '';
       document.getElementById('char-name').value = '';
@@ -1722,7 +1733,9 @@ def get_frontend_html():
       openModal('character-modal');
     }
 
-    function openEditModal(char) {
+    function openEditModal(id) {
+      const char = charactersCache.get(id);
+      if (!char) return;
       document.getElementById('modal-title').textContent = `Edit Karakter: ${char.nama_karakter}`;
       document.getElementById('char-id').value = char.id;
       document.getElementById('char-name').value = char.nama_karakter;
@@ -1790,7 +1803,9 @@ def get_frontend_html():
     }
 
     // 6. Delete Character
-    async function deleteCharacter(id, name) {
+    async function deleteCharacter(id) {
+      const char = charactersCache.get(id);
+      const name = char ? char.nama_karakter : `ID #${id}`;
       if (!confirm(`Apakah Anda yakin ingin menghapus karakter '${name}' (ID: ${id})?\\n\\nCatatan: Karakter yang terikat pada inventori pemain akan ditolak oleh Foreign Key constraint (409 Conflict).`)) {
         return;
       }
@@ -1889,6 +1904,7 @@ def get_frontend_html():
 
         container.innerHTML = weapons.map(w => {
           const stars = '★'.repeat(w.rarity);
+          const substatDisplay = w.substat_type === 'Elemental Mastery' ? w.substat_value : `${w.substat_value}%`;
           return `
             <div class="weapon-card rarity-${w.rarity}">
               <div style="display:flex; justify-content:space-between; align-items:flex-start;">
@@ -1900,7 +1916,7 @@ def get_frontend_html():
               </div>
               <div style="display:flex; justify-content:space-between; font-size:0.8rem; background:rgba(10,14,23,0.5); padding:0.4rem 0.65rem; border-radius:var(--radius-sm);">
                 <span>Base ATK: <strong>${w.base_atk}</strong></span>
-                <span>${escapeHtml(w.substat_type)}: <strong style="color:var(--primary)">${w.substat_value}%</strong></span>
+                <span>${escapeHtml(w.substat_type)}: <strong style="color:var(--primary)">${substatDisplay}</strong></span>
               </div>
               <div class="weapon-desc">${escapeHtml(w.pasif_deskripsi)}</div>
             </div>
@@ -1919,6 +1935,10 @@ def get_frontend_html():
       fetchCharacters();
       fetchTeams();
       fetchWeapons();
+
+      // Live monitoring health ping every 30 seconds
+      if (healthInterval) clearInterval(healthInterval);
+      healthInterval = setInterval(checkHealth, 30000);
     });
   </script>
 </body>
