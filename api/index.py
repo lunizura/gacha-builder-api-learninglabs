@@ -226,11 +226,11 @@ def get_weapons():
             }), 400
 
     if weapon_type:
-        conditions.append("LOWER(tipe_senjata) = LOWER(%s)")
+        conditions.append("LOWER(tipe_senjata::text) = LOWER(%s)")
         params.append(weapon_type.strip())
 
     if search:
-        conditions.append("LOWER(nama_senjata) LIKE LOWER(%s)")
+        conditions.append("LOWER(nama_senjata::text) LIKE LOWER(%s)")
         params.append(f"%{search.strip()}%")
 
     if conditions:
@@ -378,7 +378,7 @@ def get_characters():
             conditions.append("c.id_elemen = %s")
             params.append(int(element_clean))
         else:
-            conditions.append("LOWER(e.nama_elemen) = LOWER(%s)")
+            conditions.append("LOWER(e.nama_elemen::text) = LOWER(%s)")
             params.append(element_clean)
 
     if rarity:
@@ -398,15 +398,15 @@ def get_characters():
             }), 400
 
     if weapon_type:
-        conditions.append("LOWER(c.tipe_senjata) = LOWER(%s)")
+        conditions.append("LOWER(c.tipe_senjata::text) = LOWER(%s)")
         params.append(weapon_type.strip())
 
     if role:
-        conditions.append("LOWER(c.role_utama) = LOWER(%s)")
+        conditions.append("LOWER(c.role_utama::text) = LOWER(%s)")
         params.append(role.strip())
 
     if search:
-        conditions.append("LOWER(c.nama_karakter) LIKE LOWER(%s)")
+        conditions.append("LOWER(c.nama_karakter::text) LIKE LOWER(%s)")
         params.append(f"%{search.strip()}%")
 
     if conditions:

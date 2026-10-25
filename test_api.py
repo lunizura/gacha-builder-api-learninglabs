@@ -624,7 +624,148 @@ class GachaApiTestCase(unittest.TestCase):
         self.assertIn(b"charactersCache", html_res.data)
         self.assertIn(b"if (str === null || str === undefined) return '';", html_res.data)
 
+    def test_39_characters_filter_by_role_standalone(self):
+        """Memastikan filter karakter berdasarkan role_utama berdiri sendiri bekerja dengan benar."""
+        # 1. Filter role Healer (Qiqi)
+        resp_healer = self.client.get("/api/characters?role=Healer")
+        self.assertEqual(resp_healer.status_code, 200)
+        data_healer = resp_healer.get_json()["data"]
+        self.assertEqual(len(data_healer), 1)
+        self.assertEqual(data_healer[0]["nama_karakter"], "Qiqi")
+        self.assertEqual(data_healer[0]["role_utama"], "Healer")
+
+        # 2. Case-insensitive role test (healer)
+        resp_ci = self.client.get("/api/characters?role=healer")
+        self.assertEqual(resp_ci.status_code, 200)
+        self.assertEqual(len(resp_ci.get_json()["data"]), 1)
+
+        # 3. Filter role Support (Kazuha, Bennett)
+        resp_supp = self.client.get("/api/characters?role=Support")
+        self.assertEqual(resp_supp.status_code, 200)
+        data_supp = resp_supp.get_json()["data"]
+        self.assertEqual(len(data_supp), 2)
+        for c in data_supp:
+            self.assertEqual(c["role_utama"], "Support")
+
+        # 4. Filter role Shielder (Zhongli)
+        resp_shield = self.client.get("/api/characters?role=Shielder")
+        self.assertEqual(resp_shield.status_code, 200)
+        data_shield = resp_shield.get_json()["data"]
+        self.assertEqual(len(data_shield), 1)
+        self.assertEqual(data_shield[0]["nama_karakter"], "Zhongli")
+
+        # 5. Alias role_utama
+        resp_alias = self.client.get("/api/characters?role_utama=Main%20DPS")
+        self.assertEqual(resp_alias.status_code, 200)
+        data_alias = resp_alias.get_json()["data"]
+        self.assertEqual(len(data_alias), 1)
+        self.assertEqual(data_alias[0]["nama_karakter"], "Hu Tao")
+
+    def test_40_characters_filter_by_weapon_type_standalone(self):
+        """Memastikan filter karakter berdasarkan weapon_type berdiri sendiri bekerja dengan benar."""
+        # 1. Filter weapon Sword (Furina, Kazuha, Qiqi, Bennett)
+        resp_sword = self.client.get("/api/characters?weapon_type=Sword")
+        self.assertEqual(resp_sword.status_code, 200)
+        data_sword = resp_sword.get_json()["data"]
+        self.assertEqual(len(data_sword), 4)
+        for c in data_sword:
+            self.assertEqual(c["tipe_senjata"], "Sword")
+
+        # 2. Case-insensitive weapon test (sword)
+        resp_ci = self.client.get("/api/characters?weapon_type=sword")
+        self.assertEqual(resp_ci.status_code, 200)
+        self.assertEqual(len(resp_ci.get_json()["data"]), 4)
+
+        # 3. Filter weapon Polearm (Hu Tao, Zhongli, Raiden)
+        resp_pole = self.client.get("/api/characters?tipe_senjata=Polearm")
+        self.assertEqual(resp_pole.status_code, 200)
+        data_pole = resp_pole.get_json()["data"]
+        self.assertEqual(len(data_pole), 3)
+        for c in data_pole:
+            self.assertEqual(c["tipe_senjata"], "Polearm")
+
+        # 4. Filter weapon Claymore (0 karakter)
+        resp_claymore = self.client.get("/api/characters?weapon_type=Claymore")
+        self.assertEqual(resp_claymore.status_code, 200)
+        json_claymore = resp_claymore.get_json()
+        self.assertEqual(json_claymore["total"], 0)
+        self.assertEqual(json_claymore["data"], [])
+
+    def test_41_characters_filter_role_and_rarity_combinations(self):
+        """Memastikan kombinasi filter role, rarity, dan filter ganda lainnya (root cause issue di Supabase)."""
+        # 1. Rarity 4 & Healer (skenario bug UI persis: tidak ada 4-star Healer, harus return 200 OK & 0 data, bukan error 500)
+        resp_r4_healer = self.client.get("/api/characters?rarity=4&role=Healer")
+        self.assertEqual(resp_r4_healer.status_code, 200)
+        json_r4_h = resp_r4_healer.get_json()
+        self.assertEqual(json_r4_h["status"], "success")
+        self.assertEqual(json_r4_h["total"], 0)
+        self.assertEqual(json_r4_h["data"], [])
+
+        # 2. Rarity 5 & Healer -> Qiqi
+        resp_r5_healer = self.client.get("/api/characters?rarity=5&role=Healer")
+        self.assertEqual(resp_r5_healer.status_code, 200)
+        data_r5_h = resp_r5_healer.get_json()["data"]
+        self.assertEqual(len(data_r5_h), 1)
+        self.assertEqual(data_r5_h[0]["nama_karakter"], "Qiqi")
+
+        # 3. Rarity 4 & Support -> Bennett
+        resp_r4_supp = self.client.get("/api/characters?rarity=4&role=Support")
+        self.assertEqual(resp_r4_supp.status_code, 200)
+        data_r4_s = resp_r4_supp.get_json()["data"]
+        self.assertEqual(len(data_r4_s), 1)
+        self.assertEqual(data_r4_s[0]["nama_karakter"], "Bennett")
+
+        # 4. Rarity 5 & Support -> Kaedehara Kazuha
+        resp_r5_supp = self.client.get("/api/characters?rarity=5&role=Support")
+        self.assertEqual(resp_r5_supp.status_code, 200)
+        data_r5_s = resp_r5_supp.get_json()["data"]
+        self.assertEqual(len(data_r5_s), 1)
+        self.assertEqual(data_r5_s[0]["nama_karakter"], "Kaedehara Kazuha")
+
+        # 5. Full 4-filter combination: element, rarity, weapon_type, role -> Hu Tao
+        resp_combo = self.client.get("/api/characters?element=Pyro&rarity=5&weapon_type=Polearm&role=Main%20DPS")
+        self.assertEqual(resp_combo.status_code, 200)
+        data_combo = resp_combo.get_json()["data"]
+        self.assertEqual(len(data_combo), 1)
+        self.assertEqual(data_combo[0]["nama_karakter"], "Hu Tao")
+
+    def test_42_sql_query_has_text_cast_for_enum_columns(self):
+        """Memastikan klausa SQL WHERE menggunakan cast ::text eksplisit untuk kolom enum PostgreSQL."""
+        from unittest.mock import patch
+        from contextlib import contextmanager
+
+        captured_queries = []
+
+        class InterceptCursor:
+            def execute(self, query, params=None):
+                captured_queries.append(query)
+            def fetchall(self):
+                return []
+
+        @contextmanager
+        def fake_cursor(commit=False):
+            yield InterceptCursor()
+
+        with patch("api.index.get_db_cursor", side_effect=fake_cursor):
+            self.client.get("/api/characters?role=Healer&weapon_type=Sword&element=Cryo&search=Qiqi")
+            self.client.get("/api/weapons?weapon_type=Sword&search=Freedom")
+
+        self.assertEqual(len(captured_queries), 2)
+        char_sql = captured_queries[0]
+        weapon_sql = captured_queries[1]
+
+        # Memverifikasi cast ::text pada enum characters
+        self.assertIn("LOWER(c.role_utama::text) = LOWER(%s)", char_sql)
+        self.assertIn("LOWER(c.tipe_senjata::text) = LOWER(%s)", char_sql)
+        self.assertIn("LOWER(e.nama_elemen::text) = LOWER(%s)", char_sql)
+        self.assertIn("LOWER(c.nama_karakter::text) LIKE LOWER(%s)", char_sql)
+
+        # Memverifikasi cast ::text pada enum weapons
+        self.assertIn("LOWER(tipe_senjata::text) = LOWER(%s)", weapon_sql)
+        self.assertIn("LOWER(nama_senjata::text) LIKE LOWER(%s)", weapon_sql)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
 

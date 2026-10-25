@@ -230,6 +230,7 @@ class MockCursor:
         q = " ".join(query.strip().split())
         params = list(params) if params else []
         q_upper = q.upper()
+        q_norm = q_upper.replace("::TEXT", "")
 
         # ----------------------------------------------------------------------
         # 1. SELECT STATEMENTS
@@ -262,12 +263,12 @@ class MockCursor:
                     param_idx += 1
                     res = [w for w in res if w["rarity"] == rarity_val]
 
-                if "LOWER(TIPE_SENJATA) = LOWER(%S)" in q_upper or "TIPE_SENJATA = %S" in q_upper:
+                if "LOWER(TIPE_SENJATA) = LOWER(%S)" in q_norm or "TIPE_SENJATA = %S" in q_norm:
                     wt_val = str(params[param_idx]).lower()
                     param_idx += 1
                     res = [w for w in res if w["tipe_senjata"].lower() == wt_val]
 
-                if "LOWER(NAMA_SENJATA) LIKE LOWER(%S)" in q_upper:
+                if "LOWER(NAMA_SENJATA) LIKE LOWER(%S)" in q_norm:
                     search_val = str(params[param_idx]).replace("%", "").lower()
                     param_idx += 1
                     res = [w for w in res if search_val in w["nama_senjata"].lower()]
@@ -329,31 +330,31 @@ class MockCursor:
                     rows.append(item)
 
                 param_idx = 0
-                if "C.ID_ELEMEN = %S" in q_upper:
+                if "C.ID_ELEMEN = %S" in q_norm:
                     el_val = int(params[param_idx])
                     param_idx += 1
                     rows = [r for r in rows if r["id_elemen"] == el_val]
-                elif "LOWER(E.NAMA_ELEMEN) = LOWER(%S)" in q_upper:
+                elif "LOWER(E.NAMA_ELEMEN) = LOWER(%S)" in q_norm:
                     el_name = str(params[param_idx]).lower()
                     param_idx += 1
                     rows = [r for r in rows if r.get("nama_elemen", "").lower() == el_name]
 
-                if "C.RARITY = %S" in q_upper:
+                if "C.RARITY = %S" in q_norm:
                     r_val = int(params[param_idx])
                     param_idx += 1
                     rows = [r for r in rows if r["rarity"] == r_val]
 
-                if "LOWER(C.TIPE_SENJATA) = LOWER(%S)" in q_upper:
+                if "LOWER(C.TIPE_SENJATA) = LOWER(%S)" in q_norm:
                     wt_val = str(params[param_idx]).lower()
                     param_idx += 1
                     rows = [r for r in rows if r["tipe_senjata"].lower() == wt_val]
 
-                if "LOWER(C.ROLE_UTAMA) = LOWER(%S)" in q_upper:
+                if "LOWER(C.ROLE_UTAMA) = LOWER(%S)" in q_norm:
                     role_val = str(params[param_idx]).lower()
                     param_idx += 1
                     rows = [r for r in rows if r["role_utama"].lower() == role_val]
 
-                if "LOWER(C.NAMA_KARAKTER) LIKE LOWER(%S)" in q_upper:
+                if "LOWER(C.NAMA_KARAKTER) LIKE LOWER(%S)" in q_norm:
                     s_val = str(params[param_idx]).replace("%", "").lower()
                     param_idx += 1
                     rows = [r for r in rows if s_val in r["nama_karakter"].lower()]
