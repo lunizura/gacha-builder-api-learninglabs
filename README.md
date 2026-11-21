@@ -1,5 +1,6 @@
 # 🌌 Gacha Character & Team Builder REST API
 
+[![CI](https://github.com/lunizura/gacha-builder-api-learninglabs/actions/workflows/ci.yml/badge.svg)](https://github.com/lunizura/gacha-builder-api-learninglabs/actions/workflows/ci.yml)
 [![Vercel Deployment](https://img.shields.io/badge/Vercel-Serverless%20WSGI-black?logo=vercel)](https://vercel.com)
 [![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![Flask Framework](https://img.shields.io/badge/Framework-Flask%203.1-green?logo=flask)](https://flask.palletsprojects.com/)
@@ -7,9 +8,11 @@
 [![Tests](https://img.shields.io/badge/Automated%20Tests-42%20Passed-brightgreen)](test_api.py)
 [![Frontend UI](https://img.shields.io/badge/Frontend%20UI-Live%20Dashboard-orange)](https://gacha-builder-api-learninglabs.vercel.app/ui)
 
-Proyek ini merupakan implementasi **Tugas Akhir Learning Labs: Backend Development** yang mengusung arsitektur RESTful API skala produksi untuk platform manajemen karakter gacha, inventori pemain, dan pembentukan tim genshin (*team builder / Spiral Abyss*). (which is just for example dont take it seriously)
+Proyek ini merupakan implementasi **Tugas Akhir Learning Labs: Backend Development** yang mengusung arsitektur RESTful API skala produksi untuk platform manajemen karakter gacha, inventori pemain, dan pembentukan tim genshin (*team builder / Spiral Abyss*).
 
 API ini dibangun menggunakan **Python Flask**, driver native **psycopg2** dengan `RealDictCursor`, serta di-deploy secara serverless pada **Vercel** dengan basis data **PostgreSQL di Supabase**.
+
+> **English Overview:** A production-structured Flask + PostgreSQL (Supabase) REST API for managing gacha characters, weapons, player inventories, and multi-slot Spiral Abyss team compositions, deployed serverlessly on Vercel with an interactive SPA dashboard (`/ui`) and an offline-capable 42-scenario `unittest` suite (`USE_MOCK_DB=true`).
 
 ---
 
@@ -784,7 +787,7 @@ Mengambil katalog data senjata dengan dukungan query parameter untuk menyaring b
 
 ## 🧪 Pengujian Otomatis (Automated Testing)
 
-Proyek ini dilengkapi test suite komprehensif pada file `test_api.py` yang mencakup **36 skenario pengujian** menggunakan modul bawaan `unittest` dan Flask Test Client:
+Proyek ini dilengkapi test suite komprehensif pada file `test_api.py` yang mencakup **42 skenario pengujian** menggunakan modul bawaan `unittest` dan Flask Test Client:
 
 ```bash
 python test_api.py
@@ -828,9 +831,15 @@ test_33_put_rejects_null_name (__main__.GachaApiTestCase) ... ok
 test_34_sorting_order_characters_and_weapons (__main__.GachaApiTestCase) ... ok
 test_35_trailing_slash_normalization (__main__.GachaApiTestCase) ... ok
 test_36_case_insensitive_domain_normalization (__main__.GachaApiTestCase) ... ok
+test_37_frontend_ui_endpoints (__main__.GachaApiTestCase) ... ok
+test_38_character_with_special_characters_handling (__main__.GachaApiTestCase) ... ok
+test_39_characters_filter_by_role_standalone (__main__.GachaApiTestCase) ... ok
+test_40_characters_filter_by_weapon_type_standalone (__main__.GachaApiTestCase) ... ok
+test_41_characters_filter_role_and_rarity_combinations (__main__.GachaApiTestCase) ... ok
+test_42_sql_query_has_text_cast_for_enum_columns (__main__.GachaApiTestCase) ... ok
 
 ----------------------------------------------------------------------
-Ran 36 tests in 0.143s
+Ran 42 tests in 0.532s
 
 OK
 ```
