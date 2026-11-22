@@ -38,7 +38,7 @@ Menyiapkan direktori proyek agar rapi dan kompatibel dengan Vercel Serverless:
    ├── app.py              # Runner lokal (python app.py)
    ├── postman_collection.json # Koleksi pengujian Postman
    ├── requirements.txt    # Dependencies (Flask, psycopg2-binary, dll)
-   ├── test_api.py         # Automated test suite (36 tests)
+   ├── test_api.py         # Automated test suite (42 tests)
    └── vercel.json         # Routing rewrite Vercel
    ```
 2. **Inisialisasi Git**:
@@ -77,7 +77,7 @@ Menulis logika API secara modular dan defensif:
 Sebelum deployment, seluruh fungsionalitas diuji secara lokal:
 
 1. **Automated Unit Testing (`test_api.py`)**:
-   - Membuat 36 skenario test otomatis menggunakan `unittest`.
+   - Membuat 42 skenario test otomatis menggunakan `unittest`.
    - Menguji *happy path* (200, 201) dan *unhappy path / edge cases* (400, 404, 409, SQL injection attempt).
    - Menjalankan test:
      ```bash
