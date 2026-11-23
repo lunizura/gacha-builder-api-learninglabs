@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 # Muat environment variable dari .env
 load_dotenv()
 
-from api.index import app
+from api.index import app  # noqa: E402
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

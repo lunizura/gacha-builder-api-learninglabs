@@ -1,21 +1,20 @@
 import os
 import time
 from datetime import datetime, timezone
+from urllib.parse import parse_qs
 from flask import Flask, request, jsonify, Response
 import psycopg2
 
 try:
-    from api.db import get_db_cursor, serialize_data, check_db_health, USE_MOCK_DB
+    from api.db import get_db_cursor, serialize_data, check_db_health
     from api.frontend import get_frontend_html
 except ImportError:
-    from db import get_db_cursor, serialize_data, check_db_health, USE_MOCK_DB
+    from db import get_db_cursor, serialize_data, check_db_health
     from frontend import get_frontend_html
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 app.url_map.strict_slashes = False
-
-from urllib.parse import parse_qs
 
 class VercelPathMiddleware:
     """
